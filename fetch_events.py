@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 import requests
@@ -16,6 +16,9 @@ OUTPUT_FILE = "events.json"
 
 REQUEST_TIMEOUT = 30
 PAGE_SIZE = 200
+
+# Keep completed events on the calendar for seven days.
+RETENTION_DAYS = 7
 
 
 def get_api_key():
@@ -115,7 +118,11 @@ def get_start_datetime():
         microsecond=0,
     )
 
-    return start_of_today.astimezone(timezone.utc).strftime(
+    retention_start = start_of_today - timedelta(
+        days=RETENTION_DAYS
+    )
+
+    return retention_start.astimezone(timezone.utc).strftime(
         "%Y-%m-%dT%H:%M:%SZ"
     )
 
@@ -134,7 +141,7 @@ def fetch_events(session, api_key, venue_id):
                 "startDateTime": get_start_datetime(),
                 "size": PAGE_SIZE,
                 "page": page_number,
-                "sort": "startDate,asc",
+                "sort": "date,asc",
             },
         )
 
@@ -197,8 +204,8 @@ def exclusion_reason(event):
     if lower_name.startswith("new york giants"):
         return "New York Giants home game"
 
-    # Also exclude Jets/Giants games even when the Jets are designated
-    # as the home team. The user's official Giants calendar already
+    # Exclude Jets/Giants games even when the Jets are designated
+    # as the home team. The official Giants calendar already
     # covers this matchup.
     if is_jets_giants_game(lower_name):
         return "Jets vs. Giants game already covered by Giants calendar"
@@ -301,6 +308,10 @@ def main():
             f"{venue.get('state', {}).get('stateCode')})"
         )
         print(f"Ticketmaster venue ID: {venue_id}")
+        print(
+            f"Keeping completed events for "
+            f"{RETENTION_DAYS} days."
+        )
 
         raw_events = fetch_events(session, api_key, venue_id)
 
