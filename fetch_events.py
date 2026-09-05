@@ -161,6 +161,31 @@ def fetch_events(session, api_key, venue_id):
     return list(deduplicated.values())
 
 
+def is_jets_giants_game(lower_name):
+    return (
+        "new york jets" in lower_name
+        and "new york giants" in lower_name
+    )
+
+
+def is_jets_playoff_game(lower_name):
+    if "new york jets" not in lower_name:
+        return False
+
+    playoff_terms = (
+        "playoff",
+        "wild card",
+        "wildcard",
+        "divisional",
+        "afc championship",
+    )
+
+    return any(
+        term in lower_name
+        for term in playoff_terms
+    )
+
+
 def exclusion_reason(event):
     if event.get("test"):
         return "Ticketmaster test event"
@@ -168,12 +193,20 @@ def exclusion_reason(event):
     name = event.get("name", "").strip()
     lower_name = " ".join(name.casefold().split())
 
-    # Exclude Giants-hosted games.
-    #
-    # A Jets-hosted Jets vs. Giants game remains included because its
-    # title begins with "New York Jets", not "New York Giants".
+    # Exclude every Giants home game.
     if lower_name.startswith("new york giants"):
         return "New York Giants home game"
+
+    # Also exclude Jets/Giants games even when the Jets are designated
+    # as the home team. The user's official Giants calendar already
+    # covers this matchup.
+    if is_jets_giants_game(lower_name):
+        return "Jets vs. Giants game already covered by Giants calendar"
+
+    # Exclude Jets postseason home games because those are already
+    # covered by the separate NFL Playoffs calendar.
+    if is_jets_playoff_game(lower_name):
+        return "Jets playoff game already covered by NFL Playoffs calendar"
 
     # Ticketmaster sometimes lists ancillary products as separate events.
     # These are not actual stadium events and would create duplicates/noise.
