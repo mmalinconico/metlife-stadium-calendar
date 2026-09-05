@@ -64,7 +64,6 @@ def find_metlife_venue(session, api_key):
 
     venues = data.get("_embedded", {}).get("venues", [])
 
-    # First choice: exact venue name, city and state.
     for venue in venues:
         name = venue.get("name", "")
         city = venue.get("city", {}).get("name", "")
@@ -77,7 +76,6 @@ def find_metlife_venue(session, api_key):
         ):
             return venue
 
-    # Fallback: exact venue name and state.
     for venue in venues:
         name = venue.get("name", "")
         state = venue.get("state", {}).get("stateCode", "")
@@ -156,7 +154,6 @@ def fetch_events(session, api_key, venue_id):
 
         page_number += 1
 
-    # Protect against duplicate API records.
     deduplicated = {}
 
     for event in all_events:
@@ -204,19 +201,21 @@ def exclusion_reason(event):
     if lower_name.startswith("new york giants"):
         return "New York Giants home game"
 
-    # Exclude Jets/Giants games even when the Jets are designated
-    # as the home team. The official Giants calendar already
-    # covers this matchup.
+    # Exclude Jets/Giants games regardless of designated home team.
     if is_jets_giants_game(lower_name):
         return "Jets vs. Giants game already covered by Giants calendar"
 
-    # Exclude Jets postseason home games because those are already
-    # covered by the separate NFL Playoffs calendar.
+    # Exclude Jets postseason home games because those are covered by
+    # the separate NFL Playoffs calendar.
     if is_jets_playoff_game(lower_name):
         return "Jets playoff game already covered by NFL Playoffs calendar"
 
-    # Ticketmaster sometimes lists ancillary products as separate events.
-    # These are not actual stadium events and would create duplicates/noise.
+    # Ticketmaster sometimes creates separate sales listings for suite seats.
+    if "individual suite ticket" in lower_name:
+        return "Individual suite ticket listing"
+
+    # Exclude ancillary Ticketmaster listings that are not distinct
+    # stadium events.
     junk_terms = (
         "parking",
         "official platinum",
@@ -276,8 +275,6 @@ def normalize_event(event):
             "postalCode": venue.get("postalCode"),
         },
         "classifications": normalize_classifications(event),
-        "info": event.get("info"),
-        "pleaseNote": event.get("pleaseNote"),
     }
 
 
