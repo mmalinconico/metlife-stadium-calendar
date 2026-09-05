@@ -37,10 +37,6 @@ def escape_ics_text(value):
 
 
 def fold_ics_line(line):
-    """
-    RFC 5545 recommends content lines no longer than 75 octets.
-    Continuation lines begin with one space.
-    """
     encoded = line.encode("utf-8")
 
     if len(encoded) <= 75:
@@ -138,7 +134,6 @@ def build_description(event):
     ]
 
     classifications = event.get("classifications", [])
-
     categories = []
 
     for classification in classifications:
@@ -153,16 +148,6 @@ def build_description(event):
             "Category: " + " / ".join(categories) + "."
         )
 
-    info = event.get("info")
-
-    if info:
-        parts.append(info.strip())
-
-    please_note = event.get("pleaseNote")
-
-    if please_note:
-        parts.append("Please note: " + please_note.strip())
-
     url = event.get("url")
 
     if url:
@@ -174,7 +159,6 @@ def build_description(event):
 def should_skip_event(event):
     status = (event.get("status") or "").casefold()
 
-    # Canceled stadium events are not useful for a traffic-awareness calendar.
     if status in {"cancelled", "canceled"}:
         return True
 
@@ -193,7 +177,6 @@ def build_event_lines(event):
     start = event.get("start", {})
 
     local_date = start.get("localDate")
-    local_time = start.get("localTime")
     utc_datetime = start.get("dateTime")
 
     time_tba = bool(start.get("timeTBA"))
@@ -215,8 +198,6 @@ def build_event_lines(event):
     if event_url:
         lines.append(f"URL:{escape_ics_text(event_url)}")
 
-    # Use a true timed event whenever Ticketmaster provides a specific
-    # UTC date/time and has not marked the time as TBA/unspecified.
     has_specific_time = (
         utc_datetime
         and not time_tba
@@ -241,8 +222,6 @@ def build_event_lines(event):
             )
 
     elif local_date:
-        # If the date is known but the event time is not, make it an
-        # all-day calendar event rather than inventing a start time.
         start_date = datetime.strptime(
             local_date,
             "%Y-%m-%d",
@@ -258,7 +237,6 @@ def build_event_lines(event):
         )
 
     else:
-        # An event without even a usable date cannot be placed on a calendar.
         return None
 
     lines.append("END:VEVENT")
@@ -301,8 +279,6 @@ def main():
         included_count = 0
         skipped_count = 0
 
-        # Ticketmaster should already return these in chronological order,
-        # but sort again for deterministic output.
         def sort_key(event):
             start = event.get("start", {})
 
