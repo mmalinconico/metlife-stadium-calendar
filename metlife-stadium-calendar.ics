@@ -13,8 +13,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGFbS6CwwcM@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Ed Sheeran: LOOP Tour
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Pop.\n\nSource: htt
  ps://www.ticketmaster.com/ed-sheeran-loop-tour-east-rutherford-new-jersey-
  09-05-2026/event/00006331CECB2B77
@@ -27,8 +26,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_GXHECZz@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:BIGBANG 2026 WORLD TOUR
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
  ce: https://www.ticketmaster.com/bigbang-2026-world-tour-east-rutherford-n
  ew-jersey-09-11-2026/event/000064CFBC9CE038
@@ -41,8 +39,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_a6Cy2uc@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Latin.\n\nSource: h
  ttps://www.ticketmaster.com/karol-g-viajando-por-el-mundo-east-rutherford-
  new-jersey-09-17-2026/event/00006491CEE4F36D
@@ -55,8 +52,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_aNRle2Y@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Latin.\n\nSource: h
  ttps://www.ticketmaster.com/karol-g-viajando-por-el-mundo-east-rutherford-
  new-jersey-09-18-2026/event/00006498EFAC23F0
@@ -69,8 +65,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-NOyL@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Green Bay Packers
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-green-bay-east-ruthe
  rford-new-jersey-09-20-2026/event/00006488E18E0E5F
@@ -83,8 +78,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGFbgBDk1tN@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:AC/DC - POWER UP TOUR 2026 
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Metal / Nu-Metal.\n
  \nSource: https://www.ticketmaster.com/acdc-power-up-tour-2026-east-ruther
  ford-new-jersey-09-25-2026/event/0000635EBB18AA63
@@ -97,8 +91,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-J8Bt@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Cleveland Browns
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-cleveland-browns-eas
  t-rutherford-new-jersey-10-11-2026/event/00006488E1990EA9
@@ -111,8 +104,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_aKApqSB@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:The R&B Tour - Starring Usher Raymond & Chris Brown
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / R&B.\n\nSource: htt
  ps://www.ticketmaster.com/the-rb-tour-starring-usher-raymond-east-rutherfo
  rd-new-jersey-10-15-2026/event/00006494C559DCFA
@@ -125,8 +117,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-OOzB@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Miami Dolphins
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-miami-dolphins-east-
  rutherford-new-jersey-10-25-2026/event/00006488E1820E3A
@@ -139,8 +130,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-xZy2@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Las Vegas Raiders
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-las-vegas-east-ruthe
  rford-new-jersey-11-01-2026/event/00006488E1880E4F
@@ -153,8 +143,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-EYBU@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Buffalo Bills
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-buffalo-bills-east-r
  utherford-new-jersey-11-15-2026/event/00006488E19F0EB6
@@ -167,8 +156,7 @@ BEGIN:VEVENT
 UID:metlife-Z7r9jZ1A7rAjs@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Army Black Knights Football vs. Navy Midshipmen Football
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / College
  .\n\nSource: https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
 URL:https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
@@ -179,8 +167,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-PZB_@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Denver Broncos
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-denver-broncos-east-
  rutherford-new-jersey-12-13-2026/event/00006488E1940E99
@@ -193,8 +180,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-qYMW@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. New England Patriots
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-new-england-east-rut
  herford-new-jersey-12-27-2026/event/00006488E1770DFD
@@ -207,8 +193,7 @@ BEGIN:VEVENT
 UID:metlife-k7vGF_FN-LZzc@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Minnesota Vikings
-LOCATION:MetLife Stadium\, One MetLife Stadium Drive\, East Rutherford\, NJ
-  07073
+LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-minnesota-vikings-ea
  st-rutherford-new-jersey-01-03-2027/event/00006488E17C0E2D
