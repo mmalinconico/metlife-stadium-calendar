@@ -86,46 +86,7 @@ def format_date(value):
 
 
 def build_location(event):
-    venue = event.get("venue", {})
-
-    pieces = []
-
-    name = venue.get("name")
-    address = venue.get("address")
-    city = venue.get("city")
-    state = venue.get("state")
-    postal_code = venue.get("postalCode")
-
-    if name:
-        pieces.append(name)
-
-    if address:
-        pieces.append(address)
-
-    city_state_zip = ""
-
-    if city:
-        city_state_zip = city
-
-    if state:
-        if city_state_zip:
-            city_state_zip += f", {state}"
-        else:
-            city_state_zip = state
-
-    if postal_code:
-        if city_state_zip:
-            city_state_zip += f" {postal_code}"
-        else:
-            city_state_zip = postal_code
-
-    if city_state_zip:
-        pieces.append(city_state_zip)
-
-    if not pieces:
-        return "MetLife Stadium, East Rutherford, NJ"
-
-    return ", ".join(pieces)
+    return "MetLife Stadium"
 
 
 def build_description(event):
