@@ -41,31 +41,33 @@ jobs:
           TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
         run: python fetch_events.py
 
-      - name: Generate calendar
+      - name: Generate calendars
         run: python generate_calendar.py
 
-      - name: Validate calendar
+      - name: Validate calendars
         run: |
-          test -s metlife-stadium-calendar.ics
-          grep -q "^BEGIN:VCALENDAR" metlife-stadium-calendar.ics
-          grep -q "^END:VCALENDAR" metlife-stadium-calendar.ics
+          for file in \
+            metlife-stadium-calendar.ics \
+            metlife-stadium-all-events.ics
+          do
+            test -s "$file"
+            grep -q "^BEGIN:VCALENDAR" "$file"
+            grep -q "^END:VCALENDAR" "$file"
+          done
 
-      - name: Commit calendar if changed
+      - name: Commit calendars if changed
         run: |
-          if git diff --quiet -- metlife-stadium-calendar.ics && git ls-files --error-unmatch metlife-stadium-calendar.ics >/dev/null 2>&1; then
-            echo "Calendar has not changed."
-            exit 0
-          fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add metlife-stadium-calendar.ics
+          git add \
+            metlife-stadium-calendar.ics \
+            metlife-stadium-all-events.ics
 
           if git diff --cached --quiet; then
-            echo "Calendar has not changed."
+            echo "Calendars have not changed."
             exit 0
           fi
 
-          git commit -m "Update calendar"
+          git commit -m "Update calendars"
           git push
