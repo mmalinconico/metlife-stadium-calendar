@@ -3,14 +3,13 @@ VERSION:2.0
 PRODID:-//Matt Malinconico//MetLife Stadium Calendar//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:MetLife Stadium Events
+X-WR-CALNAME:MetLife Stadium All Events
 X-WR-TIMEZONE:America/New_York
-X-WR-CALDESC:Upcoming events at MetLife Stadium\, excluding New York Giants
-  games\, Jets vs. Giants games\, and Jets playoff games.
+X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-bootstrap-ed-sheeran-20260904@github-calendar
+UID:metlife-all-bootstrap-ed-sheeran-20260904@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Ed Sheeran: LOOP Tour
 LOCATION:MetLife Stadium
@@ -23,7 +22,7 @@ DTSTART:20260904T213000Z
 DTEND:20260905T013000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGFbS6CwwcM@github-calendar
+UID:metlife-all-k7vGFbS6CwwcM@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Ed Sheeran: LOOP Tour
 LOCATION:MetLife Stadium
@@ -36,7 +35,7 @@ DTSTART:20260905T213000Z
 DTEND:20260906T013000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_GXHECZz@github-calendar
+UID:metlife-all-k7vGF_GXHECZz@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:BIGBANG 2026 WORLD TOUR
 LOCATION:MetLife Stadium
@@ -49,7 +48,20 @@ DTSTART:20260912T000000Z
 DTEND:20260912T040000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_a6Cy2uc@github-calendar
+UID:metlife-all-k7vGF_a6esCZC@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. Dallas Cowboys
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-dallas-cowboys-ea
+ st-rutherford-new-jersey-09-13-2026/event/00006491C2C4E00E
+URL:https://www.ticketmaster.com/new-york-giants-vs-dallas-cowboys-east-rut
+ herford-new-jersey-09-13-2026/event/00006491C2C4E00E
+DTSTART:20260914T002000Z
+DTEND:20260914T042000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_a6Cy2uc@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
 LOCATION:MetLife Stadium
@@ -62,7 +74,7 @@ DTSTART:20260917T230000Z
 DTEND:20260918T030000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_aNRle2Y@github-calendar
+UID:metlife-all-k7vGF_aNRle2Y@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
 LOCATION:MetLife Stadium
@@ -75,7 +87,7 @@ DTSTART:20260918T230000Z
 DTEND:20260919T030000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-NOyL@github-calendar
+UID:metlife-all-k7vGF_FN-NOyL@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Green Bay Packers
 LOCATION:MetLife Stadium
@@ -88,7 +100,7 @@ DTSTART:20260920T170000Z
 DTEND:20260920T210000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGFbgBDk1tN@github-calendar
+UID:metlife-all-k7vGFbgBDk1tN@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:AC/DC - POWER UP TOUR 2026 
 LOCATION:MetLife Stadium
@@ -101,7 +113,33 @@ DTSTART:20260925T230000Z
 DTEND:20260926T030000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-J8Bt@github-calendar
+UID:metlife-all-k7vGF_a6eBCva@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. Tennessee Titans
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-tennessee-titans-
+ east-rutherford-new-jersey-09-27-2026/event/00006491C2E8E049
+URL:https://www.ticketmaster.com/new-york-giants-vs-tennessee-titans-east-r
+ utherford-new-jersey-09-27-2026/event/00006491C2E8E049
+DTSTART:20260927T170000Z
+DTEND:20260927T210000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_a6ecuTM@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. Arizona Cardinals
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-arizona-cardinals
+ -east-rutherford-new-jersey-10-04-2026/event/00006491C2B4DFF7
+URL:https://www.ticketmaster.com/new-york-giants-vs-arizona-cardinals-east-
+ rutherford-new-jersey-10-04-2026/event/00006491C2B4DFF7
+DTSTART:20261004T170000Z
+DTEND:20261004T210000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_FN-J8Bt@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Cleveland Browns
 LOCATION:MetLife Stadium
@@ -114,7 +152,7 @@ DTSTART:20261011T170000Z
 DTEND:20261011T210000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_aKApqSB@github-calendar
+UID:metlife-all-k7vGF_aKApqSB@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:The R&B Tour - Starring Usher Raymond & Chris Brown
 LOCATION:MetLife Stadium
@@ -127,7 +165,20 @@ DTSTART:20261015T233000Z
 DTEND:20261016T033000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-OOzB@github-calendar
+UID:metlife-all-k7vGF_a6eVCZ0@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. New Orleans Saints
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-new-orleans-east-
+ rutherford-new-jersey-10-18-2026/event/00006491C2D0E024
+URL:https://www.ticketmaster.com/new-york-giants-vs-new-orleans-east-ruther
+ ford-new-jersey-10-18-2026/event/00006491C2D0E024
+DTSTART:20261018T170000Z
+DTEND:20261018T210000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_FN-OOzB@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Miami Dolphins
 LOCATION:MetLife Stadium
@@ -140,7 +191,7 @@ DTSTART:20261025T170000Z
 DTEND:20261025T210000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-xZy2@github-calendar
+UID:metlife-all-k7vGF_FN-xZy2@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Las Vegas Raiders
 LOCATION:MetLife Stadium
@@ -153,7 +204,20 @@ DTSTART:20261101T180000Z
 DTEND:20261101T220000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-EYBU@github-calendar
+UID:metlife-all-k7vGF_a6eDmv8@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. Washington Commanders
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-washington-comman
+ ders-east-rutherford-new-jersey-11-12-2026/event/00006491C2EEE050
+URL:https://www.ticketmaster.com/new-york-giants-vs-washington-commanders-e
+ ast-rutherford-new-jersey-11-12-2026/event/00006491C2EEE050
+DTSTART:20261113T011500Z
+DTEND:20261113T051500Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_FN-EYBU@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Buffalo Bills
 LOCATION:MetLife Stadium
@@ -166,7 +230,33 @@ DTSTART:20261115T180000Z
 DTEND:20261115T220000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-Z7r9jZ1A7rAjs@github-calendar
+UID:metlife-all-k7vGF_a6ewmZ_@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. Jacksonville Jaguars
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-jacksonville-jagu
+ ars-east-rutherford-new-jersey-11-22-2026/event/00006491C2CAE019
+URL:https://www.ticketmaster.com/new-york-giants-vs-jacksonville-jaguars-ea
+ st-rutherford-new-jersey-11-22-2026/event/00006491C2CAE019
+DTSTART:20261122T180000Z
+DTEND:20261122T220000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_a6ezmvd@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. San Francisco 49ers
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-san-francisco-eas
+ t-rutherford-new-jersey-12-06-2026/event/00006491C2E2E043
+URL:https://www.ticketmaster.com/new-york-giants-vs-san-francisco-east-ruth
+ erford-new-jersey-12-06-2026/event/00006491C2E2E043
+DTSTART:20261206T180000Z
+DTEND:20261206T220000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-Z7r9jZ1A7rAjs@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Army Black Knights Football vs. Navy Midshipmen Football
 LOCATION:MetLife Stadium
@@ -177,7 +267,7 @@ DTSTART:20261212T200000Z
 DTEND:20261213T000000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-PZB_@github-calendar
+UID:metlife-all-k7vGF_FN-PZB_@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Denver Broncos
 LOCATION:MetLife Stadium
@@ -190,7 +280,20 @@ DTSTART:20261213T180000Z
 DTEND:20261213T220000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-qYMW@github-calendar
+UID:metlife-all-k7vGF_a6eRmZe@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:New York Giants vs. Cleveland Browns
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
+ nSource: https://www.ticketmaster.com/new-york-giants-vs-cleveland-browns-
+ east-rutherford-new-jersey-12-20-2026/event/00006491C2BEE002
+URL:https://www.ticketmaster.com/new-york-giants-vs-cleveland-browns-east-r
+ utherford-new-jersey-12-20-2026/event/00006491C2BEE002
+DTSTART:20261220T180000Z
+DTEND:20261220T220000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_FN-qYMW@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. New England Patriots
 LOCATION:MetLife Stadium
@@ -203,7 +306,7 @@ DTSTART:20261227T180000Z
 DTEND:20261227T220000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-LZzc@github-calendar
+UID:metlife-all-k7vGF_FN-LZzc@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Jets v. Minnesota Vikings
 LOCATION:MetLife Stadium
