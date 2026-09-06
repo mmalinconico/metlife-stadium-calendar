@@ -17,7 +17,8 @@ OUTPUT_FILE = "events.json"
 REQUEST_TIMEOUT = 30
 PAGE_SIZE = 200
 
-# Keep completed events on the calendar for seven days.
+# Ask Ticketmaster for a short lookback when possible.
+# The generator independently handles reliable 7-day retention.
 RETENTION_DAYS = 7
 
 
@@ -165,57 +166,25 @@ def fetch_events(session, api_key, venue_id):
     return list(deduplicated.values())
 
 
-def is_jets_giants_game(lower_name):
-    return (
-        "new york jets" in lower_name
-        and "new york giants" in lower_name
-    )
-
-
-def is_jets_playoff_game(lower_name):
-    if "new york jets" not in lower_name:
-        return False
-
-    playoff_terms = (
-        "playoff",
-        "wild card",
-        "wildcard",
-        "divisional",
-        "afc championship",
-    )
-
-    return any(
-        term in lower_name
-        for term in playoff_terms
-    )
-
-
 def exclusion_reason(event):
+    """
+    Remove only listings that are not actual stadium events.
+
+    Giants/Jets filtering is intentionally NOT done here anymore.
+    generate_calendar.py decides which legitimate events belong
+    in each of the two calendar feeds.
+    """
     if event.get("test"):
         return "Ticketmaster test event"
 
     name = event.get("name", "").strip()
     lower_name = " ".join(name.casefold().split())
 
-    # Exclude every Giants home game.
-    if lower_name.startswith("new york giants"):
-        return "New York Giants home game"
-
-    # Exclude Jets/Giants games regardless of designated home team.
-    if is_jets_giants_game(lower_name):
-        return "Jets vs. Giants game already covered by Giants calendar"
-
-    # Exclude Jets postseason home games because those are covered by
-    # the separate NFL Playoffs calendar.
-    if is_jets_playoff_game(lower_name):
-        return "Jets playoff game already covered by NFL Playoffs calendar"
-
-    # Ticketmaster sometimes creates separate sales listings for suite seats.
+    # Ticketmaster sometimes creates separate suite-ticket listings
+    # for an otherwise legitimate event.
     if "individual suite ticket" in lower_name:
         return "Individual suite ticket listing"
 
-    # Exclude ancillary Ticketmaster listings that are not distinct
-    # stadium events.
     junk_terms = (
         "parking",
         "official platinum",
@@ -305,10 +274,6 @@ def main():
             f"{venue.get('state', {}).get('stateCode')})"
         )
         print(f"Ticketmaster venue ID: {venue_id}")
-        print(
-            f"Keeping completed events for "
-            f"{RETENTION_DAYS} days."
-        )
 
         raw_events = fetch_events(session, api_key, venue_id)
 
@@ -328,7 +293,9 @@ def main():
                 )
                 continue
 
-            included_events.append(normalize_event(event))
+            included_events.append(
+                normalize_event(event)
+            )
 
         payload = {
             "generatedAt": datetime.now(timezone.utc)
@@ -348,7 +315,11 @@ def main():
             "events": included_events,
         }
 
-        with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
+        with open(
+            OUTPUT_FILE,
+            "w",
+            encoding="utf-8",
+        ) as file:
             json.dump(
                 payload,
                 file,
@@ -358,14 +329,23 @@ def main():
             file.write("\n")
 
         print()
-        print(f"Ticketmaster events returned: {len(raw_events)}")
-        print(f"Events included: {len(included_events)}")
-        print(f"Events excluded: {len(excluded_events)}")
+        print(
+            f"Ticketmaster events returned: "
+            f"{len(raw_events)}"
+        )
+        print(
+            f"Legitimate stadium events kept: "
+            f"{len(included_events)}"
+        )
+        print(
+            f"Ancillary listings excluded: "
+            f"{len(excluded_events)}"
+        )
         print(f"Wrote {OUTPUT_FILE}")
 
         if excluded_events:
             print()
-            print("Excluded listings:")
+            print("Excluded ancillary listings:")
 
             for event in excluded_events:
                 print(
@@ -374,7 +354,10 @@ def main():
                 )
 
     except Exception as error:
-        print(f"ERROR: {error}", file=sys.stderr)
+        print(
+            f"ERROR: {error}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 
