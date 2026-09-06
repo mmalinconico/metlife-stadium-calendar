@@ -6,30 +6,34 @@ from zoneinfo import ZoneInfo
 
 
 INPUT_FILE = Path("events.json")
-OUTPUT_FILE = Path("metlife-stadium-calendar.ics")
 
-CALENDAR_NAME = "MetLife Stadium Events"
-CALENDAR_DESCRIPTION = (
-    "Upcoming events at MetLife Stadium, excluding New York Giants home games."
+STANDARD_OUTPUT_FILE = Path("metlife-stadium-calendar.ics")
+ALL_EVENTS_OUTPUT_FILE = Path("metlife-stadium-all-events.ics")
+
+STANDARD_CALENDAR_NAME = "MetLife Stadium Events"
+STANDARD_CALENDAR_DESCRIPTION = (
+    "Upcoming events at MetLife Stadium, excluding New York Giants games, "
+    "Jets vs. Giants games, and Jets playoff games."
+)
+
+ALL_EVENTS_CALENDAR_NAME = "MetLife Stadium All Events"
+ALL_EVENTS_CALENDAR_DESCRIPTION = (
+    "All legitimate public events at MetLife Stadium."
 )
 
 TIMEZONE_NAME = "America/New_York"
 LOCAL_TIMEZONE = ZoneInfo(TIMEZONE_NAME)
 
 DEFAULT_EVENT_DURATION_HOURS = 4
-
-# Completed events remain in the calendar through seven days
-# after their local event date.
 RETENTION_DAYS = 7
 
-# Keep DTSTAMP deterministic so the .ics file does not change every day
-# merely because the GitHub Action ran again.
+# Keep DTSTAMP deterministic so the calendars do not change merely
+# because the GitHub Action ran again.
 DTSTAMP = "20260905T120000Z"
 
 
-# These two events were lost before the retention system was corrected.
-# They automatically stop being included once they are outside the
-# seven-day retention window.
+# These events disappeared from Ticketmaster before the retention system
+# was corrected. They automatically age out of both feeds after seven days.
 BOOTSTRAP_RECENT_EVENTS = [
     {
         "id": "bootstrap-ed-sheeran-20260904",
@@ -203,8 +207,65 @@ def should_skip_event(event):
     return False
 
 
-def event_uid(event):
-    return f"metlife-{event['id']}@github-calendar"
+def is_jets_giants_game(name):
+    lower_name = " ".join(name.casefold().split())
+
+    return (
+        "new york jets" in lower_name
+        and "new york giants" in lower_name
+    )
+
+
+def is_jets_playoff_game(name):
+    lower_name = " ".join(name.casefold().split())
+
+    if "new york jets" not in lower_name:
+        return False
+
+    playoff_terms = (
+        "playoff",
+        "wild card",
+        "wildcard",
+        "divisional",
+        "afc championship",
+    )
+
+    return any(
+        term in lower_name
+        for term in playoff_terms
+    )
+
+
+def include_in_standard_calendar(event):
+    name = event.get("name", "")
+    lower_name = " ".join(name.casefold().split())
+
+    # Giants home games are already covered by the user's
+    # official New York Giants calendar.
+    if lower_name.startswith("new york giants"):
+        return False
+
+    # Jets vs. Giants is also already covered by the Giants calendar,
+    # regardless of which team is designated as the home team.
+    if is_jets_giants_game(name):
+        return False
+
+    # Jets postseason home games are already covered by the user's
+    # separate NFL Playoffs calendar.
+    if is_jets_playoff_game(name):
+        return False
+
+    return True
+
+
+def event_uid(event, all_events=False):
+    event_id = event["id"]
+
+    if all_events:
+        return f"metlife-all-{event_id}@github-calendar"
+
+    # Preserve the exact UID scheme already used by the existing feed.
+    return f"metlife-{event_id}@github-calendar"
 
 
 def event_local_date(event):
@@ -255,13 +316,16 @@ def event_sort_datetime(event):
             tzinfo=LOCAL_TIMEZONE,
         )
 
-        return local_midnight.astimezone(timezone.utc)
+        return local_midnight.astimezone(
+            timezone.utc
+        )
 
-    return datetime.max.replace(tzinfo=timezone.utc)
+    return datetime.max.replace(
+        tzinfo=timezone.utc
+    )
 
 
-def build_event_lines(event):
-    event_id = event["id"]
+def build_event_lines(event, all_events=False):
     name = event["name"]
     start = event.get("start", {})
 
@@ -275,7 +339,7 @@ def build_event_lines(event):
 
     lines = [
         "BEGIN:VEVENT",
-        f"UID:metlife-{escape_ics_text(event_id)}@github-calendar",
+        f"UID:{escape_ics_text(event_uid(event, all_events))}",
         f"DTSTAMP:{DTSTAMP}",
         f"SUMMARY:{escape_ics_text(name)}",
         f"LOCATION:{escape_ics_text(build_location(event))}",
@@ -285,7 +349,9 @@ def build_event_lines(event):
     event_url = event.get("url")
 
     if event_url:
-        lines.append(f"URL:{escape_ics_text(event_url)}")
+        lines.append(
+            f"URL:{escape_ics_text(event_url)}"
+        )
 
     has_specific_time = (
         utc_datetime
@@ -296,7 +362,9 @@ def build_event_lines(event):
     )
 
     if has_specific_time:
-        start_datetime = parse_utc_datetime(utc_datetime)
+        start_datetime = parse_utc_datetime(
+            utc_datetime
+        )
 
         if start_datetime:
             end_datetime = start_datetime + timedelta(
@@ -316,13 +384,17 @@ def build_event_lines(event):
             "%Y-%m-%d",
         ).date()
 
-        end_date = start_date + timedelta(days=1)
+        end_date = start_date + timedelta(
+            days=1
+        )
 
         lines.append(
-            f"DTSTART;VALUE=DATE:{format_date(start_date.isoformat())}"
+            f"DTSTART;VALUE=DATE:"
+            f"{format_date(start_date.isoformat())}"
         )
         lines.append(
-            f"DTEND;VALUE=DATE:{format_date(end_date.isoformat())}"
+            f"DTEND;VALUE=DATE:"
+            f"{format_date(end_date.isoformat())}"
         )
 
     else:
@@ -355,11 +427,11 @@ def unfold_ics_lines(text):
     return unfolded
 
 
-def read_existing_event_blocks():
-    if not OUTPUT_FILE.exists():
+def read_existing_event_blocks(output_file):
+    if not output_file.exists():
         return []
 
-    text = OUTPUT_FILE.read_text(
+    text = output_file.read_text(
         encoding="utf-8"
     )
 
@@ -517,10 +589,231 @@ def bootstrap_events_for_today(
         if not local_date:
             continue
 
-        if cutoff_date <= local_date <= now_local.date():
+        if (
+            cutoff_date
+            <= local_date
+            <= now_local.date()
+        ):
             active.append(event)
 
     return active
+
+
+def generate_feed(
+    events,
+    output_file,
+    calendar_name,
+    calendar_description,
+    all_events,
+):
+    # Read the existing file before overwriting it so recently completed
+    # events can survive Ticketmaster removing them from its API results.
+    existing_blocks = read_existing_event_blocks(
+        output_file
+    )
+
+    now_local = datetime.now(
+        LOCAL_TIMEZONE
+    )
+
+    cutoff_date = (
+        now_local.date()
+        - timedelta(days=RETENTION_DAYS)
+    )
+
+    calendar_lines = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Matt Malinconico//MetLife Stadium Calendar//EN",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        f"X-WR-CALNAME:{escape_ics_text(calendar_name)}",
+        f"X-WR-TIMEZONE:{TIMEZONE_NAME}",
+        (
+            "X-WR-CALDESC:"
+            f"{escape_ics_text(calendar_description)}"
+        ),
+        "REFRESH-INTERVAL;VALUE=DURATION:P1D",
+        "X-PUBLISHED-TTL:P1D",
+    ]
+
+    calendar_items = []
+    active_uids = set()
+
+    current_count = 0
+    retained_count = 0
+    bootstrap_count = 0
+    filtered_count = 0
+    skipped_count = 0
+
+    for event in events:
+        if should_skip_event(event):
+            skipped_count += 1
+            continue
+
+        if (
+            not all_events
+            and not include_in_standard_calendar(event)
+        ):
+            filtered_count += 1
+            continue
+
+        event_lines = build_event_lines(
+            event,
+            all_events=all_events,
+        )
+
+        if not event_lines:
+            print(
+                f"Skipping event with no usable date: "
+                f"{event.get('name')}"
+            )
+            skipped_count += 1
+            continue
+
+        uid = event_uid(
+            event,
+            all_events=all_events,
+        )
+
+        active_uids.add(uid)
+
+        calendar_items.append(
+            (
+                event_sort_datetime(event),
+                event_lines,
+            )
+        )
+
+        current_count += 1
+
+    # Recover the two recent Ed Sheeran events until they naturally
+    # age out of the seven-day retention window.
+    for event in bootstrap_events_for_today(
+        now_local,
+        cutoff_date,
+    ):
+        if (
+            not all_events
+            and not include_in_standard_calendar(event)
+        ):
+            continue
+
+        uid = event_uid(
+            event,
+            all_events=all_events,
+        )
+
+        if uid in active_uids:
+            continue
+
+        event_lines = build_event_lines(
+            event,
+            all_events=all_events,
+        )
+
+        if not event_lines:
+            continue
+
+        active_uids.add(uid)
+
+        calendar_items.append(
+            (
+                event_sort_datetime(event),
+                event_lines,
+            )
+        )
+
+        bootstrap_count += 1
+
+    # Carry forward recently completed events from this feed's previous
+    # published file when Ticketmaster has stopped returning them.
+    for block in existing_blocks:
+        uid = get_property_value(
+            block,
+            "UID",
+        )
+
+        if not uid:
+            continue
+
+        if uid in active_uids:
+            continue
+
+        if not should_retain_existing_event(
+            block,
+            now_local,
+            cutoff_date,
+        ):
+            continue
+
+        active_uids.add(uid)
+
+        calendar_items.append(
+            (
+                existing_event_sort_datetime(block),
+                block,
+            )
+        )
+
+        retained_count += 1
+
+    calendar_items.sort(
+        key=lambda item: item[0]
+    )
+
+    for _, event_lines in calendar_items:
+        calendar_lines.extend(
+            event_lines
+        )
+
+    calendar_lines.append(
+        "END:VCALENDAR"
+    )
+
+    folded_lines = [
+        fold_ics_line(line)
+        for line in calendar_lines
+    ]
+
+    calendar_text = (
+        "\r\n".join(folded_lines)
+        + "\r\n"
+    )
+
+    output_file.write_text(
+        calendar_text,
+        encoding="utf-8",
+        newline="",
+    )
+
+    print()
+    print(f"Calendar: {calendar_name}")
+    print(f"File: {output_file}")
+    print(
+        f"Current/upcoming events written: "
+        f"{current_count}"
+    )
+    print(
+        f"Recent completed events retained: "
+        f"{retained_count}"
+    )
+    print(
+        f"Bootstrap recent events restored: "
+        f"{bootstrap_count}"
+    )
+    print(
+        f"Events excluded by feed rules: "
+        f"{filtered_count}"
+    )
+    print(
+        f"Events skipped: "
+        f"{skipped_count}"
+    )
+    print(
+        f"Retention window: "
+        f"{RETENTION_DAYS} days"
+    )
 
 
 def main():
@@ -531,191 +824,35 @@ def main():
                 "Run fetch_events.py first."
             )
 
-        # Read the existing published calendar BEFORE overwriting it.
-        # Ticketmaster's search API stops returning events after they
-        # occur, so this file acts as our short-term historical cache.
-        existing_blocks = read_existing_event_blocks()
-
         with INPUT_FILE.open(
             "r",
             encoding="utf-8",
         ) as file:
             payload = json.load(file)
 
-        events = payload.get("events", [])
-
-        now_local = datetime.now(
-            LOCAL_TIMEZONE
+        events = payload.get(
+            "events",
+            [],
         )
 
-        cutoff_date = (
-            now_local.date()
-            - timedelta(days=RETENTION_DAYS)
+        generate_feed(
+            events=events,
+            output_file=STANDARD_OUTPUT_FILE,
+            calendar_name=STANDARD_CALENDAR_NAME,
+            calendar_description=STANDARD_CALENDAR_DESCRIPTION,
+            all_events=False,
         )
 
-        calendar_lines = [
-            "BEGIN:VCALENDAR",
-            "VERSION:2.0",
-            "PRODID:-//Matt Malinconico//MetLife Stadium Calendar//EN",
-            "CALSCALE:GREGORIAN",
-            "METHOD:PUBLISH",
-            f"X-WR-CALNAME:{escape_ics_text(CALENDAR_NAME)}",
-            f"X-WR-TIMEZONE:{TIMEZONE_NAME}",
-            (
-                "X-WR-CALDESC:"
-                f"{escape_ics_text(CALENDAR_DESCRIPTION)}"
-            ),
-            "REFRESH-INTERVAL;VALUE=DURATION:P1D",
-            "X-PUBLISHED-TTL:P1D",
-        ]
-
-        calendar_items = []
-        active_uids = set()
-
-        current_count = 0
-        retained_count = 0
-        bootstrap_count = 0
-        skipped_count = 0
-
-        # Current/upcoming events from Ticketmaster.
-        for event in events:
-            if should_skip_event(event):
-                skipped_count += 1
-                continue
-
-            event_lines = build_event_lines(event)
-
-            if not event_lines:
-                print(
-                    f"Skipping event with no usable date: "
-                    f"{event.get('name')}"
-                )
-                skipped_count += 1
-                continue
-
-            uid = event_uid(event)
-            active_uids.add(uid)
-
-            calendar_items.append(
-                (
-                    event_sort_datetime(event),
-                    event_lines,
-                )
-            )
-
-            current_count += 1
-
-        # One-time recovery of the Sept. 4 and Sept. 5 Ed Sheeran
-        # events that were lost before retention was implemented
-        # correctly. These age out automatically.
-        for event in bootstrap_events_for_today(
-            now_local,
-            cutoff_date,
-        ):
-            uid = event_uid(event)
-
-            if uid in active_uids:
-                continue
-
-            event_lines = build_event_lines(event)
-
-            if not event_lines:
-                continue
-
-            active_uids.add(uid)
-
-            calendar_items.append(
-                (
-                    event_sort_datetime(event),
-                    event_lines,
-                )
-            )
-
-            bootstrap_count += 1
-
-        # Carry forward recently completed events from yesterday's
-        # published calendar when Ticketmaster has stopped returning them.
-        for block in existing_blocks:
-            uid = get_property_value(
-                block,
-                "UID",
-            )
-
-            if not uid:
-                continue
-
-            if uid in active_uids:
-                continue
-
-            if not should_retain_existing_event(
-                block,
-                now_local,
-                cutoff_date,
-            ):
-                continue
-
-            active_uids.add(uid)
-
-            calendar_items.append(
-                (
-                    existing_event_sort_datetime(block),
-                    block,
-                )
-            )
-
-            retained_count += 1
-
-        calendar_items.sort(
-            key=lambda item: item[0]
+        generate_feed(
+            events=events,
+            output_file=ALL_EVENTS_OUTPUT_FILE,
+            calendar_name=ALL_EVENTS_CALENDAR_NAME,
+            calendar_description=ALL_EVENTS_CALENDAR_DESCRIPTION,
+            all_events=True,
         )
 
-        for _, event_lines in calendar_items:
-            calendar_lines.extend(
-                event_lines
-            )
-
-        calendar_lines.append(
-            "END:VCALENDAR"
-        )
-
-        folded_lines = [
-            fold_ics_line(line)
-            for line in calendar_lines
-        ]
-
-        calendar_text = (
-            "\r\n".join(folded_lines)
-            + "\r\n"
-        )
-
-        OUTPUT_FILE.write_text(
-            calendar_text,
-            encoding="utf-8",
-            newline="",
-        )
-
-        print(
-            f"Current/upcoming events written: "
-            f"{current_count}"
-        )
-        print(
-            f"Recent completed events retained: "
-            f"{retained_count}"
-        )
-        print(
-            f"Bootstrap recent events restored: "
-            f"{bootstrap_count}"
-        )
-        print(
-            f"Events skipped: {skipped_count}"
-        )
-        print(
-            f"Retention window: "
-            f"{RETENTION_DAYS} days"
-        )
-        print(
-            f"Wrote {OUTPUT_FILE}"
-        )
+        print()
+        print("Both calendar feeds generated successfully.")
 
     except Exception as error:
         print(
