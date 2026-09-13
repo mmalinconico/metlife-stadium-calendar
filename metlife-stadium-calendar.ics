@@ -10,19 +10,6 @@ X-WR-CALDESC:Upcoming events at MetLife Stadium\, excluding New York Giants
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-k7vGFbS6CwwcM@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Ed Sheeran: LOOP Tour
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Pop.\n\nSource: htt
- ps://www.ticketmaster.com/ed-sheeran-loop-tour-east-rutherford-new-jersey-
- 09-05-2026/event/00006331CECB2B77
-URL:https://www.ticketmaster.com/ed-sheeran-loop-tour-east-rutherford-new-j
- ersey-09-05-2026/event/00006331CECB2B77
-DTSTART:20260905T213000Z
-DTEND:20260906T013000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-k7vGF_GXHECZz@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:BIGBANG 2026 WORLD TOUR
