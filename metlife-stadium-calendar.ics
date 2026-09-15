@@ -189,4 +189,17 @@ URL:https://www.ticketmaster.com/new-york-jets-v-minnesota-vikings-east-rut
 DTSTART:20270103T180000Z
 DTEND:20270103T220000Z
 END:VEVENT
+BEGIN:VEVENT
+UID:metlife-k7vGF_3Cwtd0z@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Kenny Chesney: The Original Vibe Room Tour with Eric Church
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Country.\n\nSource:
+  https://www.ticketmaster.com/kenny-chesney-the-original-vibe-room-east-ru
+ therford-new-jersey-08-07-2027/event/00006523B2A43938
+URL:https://www.ticketmaster.com/kenny-chesney-the-original-vibe-room-east-
+ rutherford-new-jersey-08-07-2027/event/00006523B2A43938
+DTSTART:20270807T203000Z
+DTEND:20270808T003000Z
+END:VEVENT
 END:VCALENDAR
