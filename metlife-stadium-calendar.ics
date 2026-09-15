@@ -59,7 +59,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-green-bay-east-rutherford-
  new-jersey-09-20-2026/event/00006488E18E0E5F
 DTSTART:20260920T170000Z
-DTEND:20260920T210000Z
+DTEND:20260920T200000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGFbgBDk1tN@github-calendar
@@ -85,7 +85,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-cleveland-browns-east-ruth
  erford-new-jersey-10-11-2026/event/00006488E1990EA9
 DTSTART:20261011T170000Z
-DTEND:20261011T210000Z
+DTEND:20261011T200000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_aKApqSB@github-calendar
@@ -98,7 +98,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / R&B.\n\nSource: htt
 URL:https://www.ticketmaster.com/the-rb-tour-starring-usher-raymond-east-ru
  therford-new-jersey-10-15-2026/event/00006494C559DCFA
 DTSTART:20261015T233000Z
-DTEND:20261016T033000Z
+DTEND:20261016T030000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_FN-OOzB@github-calendar
@@ -111,7 +111,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-miami-dolphins-east-ruther
  ford-new-jersey-10-25-2026/event/00006488E1820E3A
 DTSTART:20261025T170000Z
-DTEND:20261025T210000Z
+DTEND:20261025T200000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_FN-xZy2@github-calendar
@@ -124,7 +124,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-las-vegas-east-rutherford-
  new-jersey-11-01-2026/event/00006488E1880E4F
 DTSTART:20261101T180000Z
-DTEND:20261101T220000Z
+DTEND:20261101T210000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_FN-EYBU@github-calendar
@@ -137,7 +137,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-buffalo-bills-east-rutherf
  ord-new-jersey-11-15-2026/event/00006488E19F0EB6
 DTSTART:20261115T180000Z
-DTEND:20261115T220000Z
+DTEND:20261115T210000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-Z7r9jZ1A7rAjs@github-calendar
@@ -148,7 +148,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / College
  .\n\nSource: https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
 URL:https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
 DTSTART:20261212T200000Z
-DTEND:20261213T000000Z
+DTEND:20261212T230000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_FN-PZB_@github-calendar
@@ -161,7 +161,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-denver-broncos-east-ruther
  ford-new-jersey-12-13-2026/event/00006488E1940E99
 DTSTART:20261213T180000Z
-DTEND:20261213T220000Z
+DTEND:20261213T210000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_FN-qYMW@github-calendar
@@ -174,7 +174,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-new-england-east-rutherfor
  d-new-jersey-12-27-2026/event/00006488E1770DFD
 DTSTART:20261227T180000Z
-DTEND:20261227T220000Z
+DTEND:20261227T210000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_FN-LZzc@github-calendar
@@ -187,7 +187,7 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
 URL:https://www.ticketmaster.com/new-york-jets-v-minnesota-vikings-east-rut
  herford-new-jersey-01-03-2027/event/00006488E17C0E2D
 DTSTART:20270103T180000Z
-DTEND:20270103T220000Z
+DTEND:20270103T210000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_3Cwtd0z@github-calendar
@@ -200,6 +200,6 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Country.\n\nSource:
 URL:https://www.ticketmaster.com/kenny-chesney-the-original-vibe-room-east-
  rutherford-new-jersey-08-07-2027/event/00006523B2A43938
 DTSTART:20270807T203000Z
-DTEND:20270808T003000Z
+DTEND:20270808T030000Z
 END:VEVENT
 END:VCALENDAR
