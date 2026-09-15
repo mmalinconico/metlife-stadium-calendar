@@ -24,7 +24,9 @@ ALL_EVENTS_CALENDAR_DESCRIPTION = (
 TIMEZONE_NAME = "America/New_York"
 LOCAL_TIMEZONE = ZoneInfo(TIMEZONE_NAME)
 
+SPORTS_EVENT_DURATION_HOURS = 3
 DEFAULT_EVENT_DURATION_HOURS = 4
+CONCERT_END_HOUR = 23
 RETENTION_DAYS = 7
 
 # Keep DTSTAMP deterministic so the calendars do not change merely
@@ -325,6 +327,59 @@ def event_sort_datetime(event):
     )
 
 
+def event_segment(event):
+    classifications = event.get(
+        "classifications",
+        [],
+    )
+
+    for classification in classifications:
+        segment = classification.get("segment")
+
+        if segment:
+            return segment.casefold()
+
+    return ""
+
+
+def calculate_event_end(event, start_datetime):
+    segment = event_segment(event)
+
+    if segment == "sports":
+        return start_datetime + timedelta(
+            hours=SPORTS_EVENT_DURATION_HOURS
+        )
+
+    if segment == "music":
+        local_start = start_datetime.astimezone(
+            LOCAL_TIMEZONE
+        )
+
+        local_end = datetime(
+            local_start.year,
+            local_start.month,
+            local_start.day,
+            CONCERT_END_HOUR,
+            0,
+            0,
+            tzinfo=LOCAL_TIMEZONE,
+        )
+
+        concert_end = local_end.astimezone(
+            timezone.utc
+        )
+
+        # If an unusual event begins at or after 11 PM,
+        # avoid creating an end time before or equal to
+        # the event's start time.
+        if concert_end > start_datetime:
+            return concert_end
+
+    return start_datetime + timedelta(
+        hours=DEFAULT_EVENT_DURATION_HOURS
+    )
+
+
 def build_event_lines(event, all_events=False):
     name = event["name"]
     start = event.get("start", {})
@@ -367,8 +422,9 @@ def build_event_lines(event, all_events=False):
         )
 
         if start_datetime:
-            end_datetime = start_datetime + timedelta(
-                hours=DEFAULT_EVENT_DURATION_HOURS
+            end_datetime = calculate_event_end(
+                event,
+                start_datetime,
             )
 
             lines.append(
