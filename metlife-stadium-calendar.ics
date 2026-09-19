@@ -10,19 +10,6 @@ X-WR-CALDESC:Upcoming events at MetLife Stadium\, excluding New York Giants
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-k7vGF_GXHECZz@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:BIGBANG 2026 WORLD TOUR
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Pop / K-Pop.\n\nSou
- rce: https://www.ticketmaster.com/bigbang-2026-world-tour-east-rutherford-
- new-jersey-09-11-2026/event/000064CFBC9CE038
-URL:https://www.ticketmaster.com/bigbang-2026-world-tour-east-rutherford-ne
- w-jersey-09-11-2026/event/000064CFBC9CE038
-DTSTART:20260912T000000Z
-DTEND:20260912T040000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-k7vGF_a6Cy2uc@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
