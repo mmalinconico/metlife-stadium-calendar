@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_a6esCZC@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. Dallas Cowboys
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-giants-vs-dallas-cowboys-ea
- st-rutherford-new-jersey-09-13-2026/event/00006491C2C4E00E
-URL:https://www.ticketmaster.com/new-york-giants-vs-dallas-cowboys-east-rut
- herford-new-jersey-09-13-2026/event/00006491C2C4E00E
-DTSTART:20260914T002000Z
-DTEND:20260914T042000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6Cy2uc@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
