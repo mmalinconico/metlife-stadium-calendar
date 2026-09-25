@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_a6Cy2uc@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Latin.\n\nSource: h
- ttps://www.ticketmaster.com/karol-g-viajando-por-el-mundo-east-rutherford-
- new-jersey-09-17-2026/event/00006491CEE4F36D
-URL:https://www.ticketmaster.com/karol-g-viajando-por-el-mundo-east-rutherf
- ord-new-jersey-09-17-2026/event/00006491CEE4F36D
-DTSTART:20260917T230000Z
-DTEND:20260918T030000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_aNRle2Y@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:KAROL G - VIAJANDO POR EL MUNDO TROPITOUR
