@@ -310,13 +310,10 @@ def contains_phrase(text, phrase):
     )
 
 
-def event_classification_values(event):
+def classification_values(classifications):
     values = []
 
-    for classification in event.get(
-        "classifications",
-        [],
-    ):
+    for classification in classifications:
         for key in ("segment", "genre", "subGenre"):
             value = classification.get(key)
 
@@ -324,6 +321,24 @@ def event_classification_values(event):
                 values.append(
                     normalized_name(value)
                 )
+
+    return values
+
+
+def event_classification_values(event):
+    values = classification_values(
+        event.get("classifications", [])
+    )
+
+    # Ticketmaster also attaches classifications to the participating
+    # attractions. Preserve those as a second signal in case the event-level
+    # classification is incomplete or malformed.
+    for attraction in event.get("attractions", []):
+        values.extend(
+            classification_values(
+                attraction.get("classifications", [])
+            )
+        )
 
     return values
 
@@ -337,18 +352,36 @@ def is_football_classified(event):
     )
 
 
-def extract_nfl_teams(name):
-    lower_name = normalized_name(name)
+def nfl_teams_in_text(value):
+    lower_value = normalized_name(value)
     teams = set()
 
     for team, aliases in NFL_TEAM_ALIASES.items():
         for alias in aliases:
             if contains_phrase(
-                lower_name,
+                lower_value,
                 alias,
             ):
                 teams.add(team)
                 break
+
+    return teams
+
+
+def extract_nfl_teams(event):
+    teams = nfl_teams_in_text(
+        event.get("name", "")
+    )
+
+    # Ticketmaster normally includes the participating teams as attractions.
+    # Using those names makes ownership resilient to abbreviated or unusual
+    # event titles such as a relocated matchup.
+    for attraction in event.get("attractions", []):
+        teams.update(
+            nfl_teams_in_text(
+                attraction.get("name", "")
+            )
+        )
 
     return teams
 
@@ -393,7 +426,7 @@ def is_nfl_game(event):
     if is_named_super_bowl_game(name):
         return True
 
-    teams = extract_nfl_teams(name)
+    teams = extract_nfl_teams(event)
     football_classified = is_football_classified(
         event
     )
@@ -446,9 +479,7 @@ def is_giants_game(event):
 
     return (
         "New York Giants"
-        in extract_nfl_teams(
-            event.get("name", "")
-        )
+        in extract_nfl_teams(event)
     )
 
 
