@@ -6,7 +6,7 @@ METHOD:PUBLISH
 X-WR-CALNAME:MetLife Stadium Events
 X-WR-TIMEZONE:America/New_York
 X-WR-CALDESC:Upcoming events at MetLife Stadium\, excluding New York Giants
-  games\, Jets vs. Giants games\, and NFL postseason games.
+  games and NFL postseason games covered by the user's other calendars.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
