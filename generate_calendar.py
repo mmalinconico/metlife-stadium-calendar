@@ -13,7 +13,7 @@ ALL_EVENTS_OUTPUT_FILE = Path("metlife-stadium-all-events.ics")
 STANDARD_CALENDAR_NAME = "MetLife Stadium Events"
 STANDARD_CALENDAR_DESCRIPTION = (
     "Upcoming events at MetLife Stadium, excluding New York Giants games, "
-    "Jets vs. Giants games, and Jets playoff games."
+    "Jets vs. Giants games, and NFL postseason games."
 )
 
 ALL_EVENTS_CALENDAR_NAME = "MetLife Stadium All Events"
@@ -218,23 +218,47 @@ def is_jets_giants_game(name):
     )
 
 
-def is_jets_playoff_game(name):
-    lower_name = " ".join(name.casefold().split())
+def is_nfl_event(event):
+    classifications = event.get(
+        "classifications",
+        [],
+    )
 
-    if "new york jets" not in lower_name:
+    for classification in classifications:
+        for key in ("segment", "genre", "subGenre"):
+            value = classification.get(key)
+
+            if (
+                value
+                and value.casefold() == "nfl"
+            ):
+                return True
+
+    return False
+
+
+def is_nfl_postseason_game(event):
+    if not is_nfl_event(event):
         return False
 
-    playoff_terms = (
+    name = event.get("name", "")
+    lower_name = " ".join(name.casefold().split())
+
+    postseason_terms = (
+        "postseason",
         "playoff",
         "wild card",
         "wildcard",
         "divisional",
+        "conference championship",
         "afc championship",
+        "nfc championship",
+        "super bowl",
     )
 
     return any(
         term in lower_name
-        for term in playoff_terms
+        for term in postseason_terms
     )
 
 
@@ -252,9 +276,10 @@ def include_in_standard_calendar(event):
     if is_jets_giants_game(name):
         return False
 
-    # Jets postseason home games are already covered by the user's
-    # separate NFL Playoffs calendar.
-    if is_jets_playoff_game(name):
+    # All NFL postseason games are already covered by the user's
+    # separate NFL Playoffs calendar, except Giants games, which are
+    # covered by the official New York Giants calendar.
+    if is_nfl_postseason_game(event):
         return False
 
     return True
