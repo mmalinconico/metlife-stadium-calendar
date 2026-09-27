@@ -287,6 +287,7 @@ def exclusion_reason(event):
         "club seating",
         "club access",
         "hospitality package",
+        "season ticket",
     )
 
     for term in junk_terms:
@@ -317,6 +318,25 @@ def normalize_classifications(event):
     return normalized
 
 
+def normalize_attractions(event):
+    normalized = []
+
+    for attraction in event.get(
+        "_embedded", {}
+    ).get("attractions", []):
+        normalized.append(
+            {
+                "id": attraction.get("id"),
+                "name": attraction.get("name"),
+                "classifications": normalize_classifications(
+                    attraction
+                ),
+            }
+        )
+
+    return normalized
+
+
 def normalize_event(event):
     venues = event.get("_embedded", {}).get("venues", [])
     venue = venues[0] if venues else {}
@@ -336,6 +356,7 @@ def normalize_event(event):
             "postalCode": venue.get("postalCode"),
         },
         "classifications": normalize_classifications(event),
+        "attractions": normalize_attractions(event),
     }
 
 
