@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -16,6 +17,18 @@ OUTPUT_FILE = "events.json"
 
 REQUEST_TIMEOUT = 30
 PAGE_SIZE = 200
+
+# Retry temporary Ticketmaster/network failures before giving up.
+MAX_API_ATTEMPTS = 4
+RETRY_DELAYS_SECONDS = (5, 15, 30)
+RATE_LIMIT_RETRY_DELAYS_SECONDS = (30, 60, 120)
+RETRYABLE_STATUS_CODES = {
+    429,
+    500,
+    502,
+    503,
+    504,
+}
 
 # Ask Ticketmaster for a short lookback when possible.
 # The generator independently handles reliable 7-day retention.
@@ -33,6 +46,33 @@ def get_api_key():
     return api_key
 
 
+def get_retry_delay(response, retry_index):
+    """
+    Choose how long to wait before retrying.
+
+    For a 429 response, honor Ticketmaster's Retry-After header
+    when it contains a numeric number of seconds. Otherwise use
+    a more conservative rate-limit backoff.
+
+    Other temporary failures use a shorter backoff.
+    """
+    if response is not None and response.status_code == 429:
+        retry_after = response.headers.get("Retry-After")
+
+        if retry_after:
+            try:
+                retry_after_seconds = float(retry_after)
+
+                if retry_after_seconds >= 0:
+                    return retry_after_seconds
+            except ValueError:
+                pass
+
+        return RATE_LIMIT_RETRY_DELAYS_SECONDS[retry_index]
+
+    return RETRY_DELAYS_SECONDS[retry_index]
+
+
 def api_get(session, api_key, path, params=None):
     if params is None:
         params = {}
@@ -42,14 +82,66 @@ def api_get(session, api_key, path, params=None):
 
     url = f"{API_BASE}/{path}"
 
-    response = session.get(
-        url,
-        params=params,
-        timeout=REQUEST_TIMEOUT,
-    )
+    for attempt in range(1, MAX_API_ATTEMPTS + 1):
+        response = None
 
-    response.raise_for_status()
-    return response.json()
+        try:
+            response = session.get(
+                url,
+                params=params,
+                timeout=REQUEST_TIMEOUT,
+            )
+
+            if response.status_code in RETRYABLE_STATUS_CODES:
+                if attempt >= MAX_API_ATTEMPTS:
+                    response.raise_for_status()
+
+                retry_index = attempt - 1
+                delay = get_retry_delay(
+                    response,
+                    retry_index,
+                )
+
+                print(
+                    f"Ticketmaster returned HTTP "
+                    f"{response.status_code}. "
+                    f"Retrying in {delay:g} seconds "
+                    f"(attempt {attempt + 1} of "
+                    f"{MAX_API_ATTEMPTS})..."
+                )
+
+                time.sleep(delay)
+                continue
+
+            response.raise_for_status()
+            return response.json()
+
+        except (
+            requests.exceptions.Timeout,
+            requests.exceptions.ConnectionError,
+        ) as error:
+            if attempt >= MAX_API_ATTEMPTS:
+                raise
+
+            retry_index = attempt - 1
+            delay = get_retry_delay(
+                response,
+                retry_index,
+            )
+
+            print(
+                f"Ticketmaster request failed: "
+                f"{error}. "
+                f"Retrying in {delay:g} seconds "
+                f"(attempt {attempt + 1} of "
+                f"{MAX_API_ATTEMPTS})..."
+            )
+
+            time.sleep(delay)
+
+    raise RuntimeError(
+        "Ticketmaster request failed after all retry attempts."
+    )
 
 
 def find_metlife_venue(session, api_key):
