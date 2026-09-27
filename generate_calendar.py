@@ -245,8 +245,8 @@ NFL_TEAM_ALIASES = {
     "Minnesota Vikings": ("minnesota vikings", "vikings"),
     "New England Patriots": ("new england patriots", "patriots"),
     "New Orleans Saints": ("new orleans saints", "saints"),
-    "New York Giants": ("new york giants", "ny giants", "giants"),
-    "New York Jets": ("new york jets", "ny jets", "jets"),
+    "New York Giants": ("new york giants", "ny giants", "nyg", "giants"),
+    "New York Jets": ("new york jets", "ny jets", "nyj", "jets"),
     "Philadelphia Eagles": ("philadelphia eagles", "eagles"),
     "Pittsburgh Steelers": ("pittsburgh steelers", "steelers"),
     "San Francisco 49ers": ("san francisco 49ers", "49ers"),
@@ -362,6 +362,24 @@ def is_known_nfl_non_game(name):
     )
 
 
+def is_named_super_bowl_game(name):
+    lower_name = normalized_name(name)
+
+    # Recognize the actual Super Bowl even if Ticketmaster's NFL/football
+    # classification is missing or malformed. Requiring a Roman numeral
+    # or number avoids treating generic Super Bowl-branded side events
+    # as the game itself. Known non-game terms are checked first by
+    # is_nfl_game().
+    return bool(
+        re.search(
+            r"(?<![a-z0-9])super bowl "
+            r"(?:[ivxlcdm]+|[0-9]+)"
+            r"(?![a-z0-9])",
+            lower_name,
+        )
+    )
+
+
 def is_nfl_game(event):
     name = event.get("name", "")
     lower_name = normalized_name(name)
@@ -371,6 +389,9 @@ def is_nfl_game(event):
 
     if is_known_nfl_non_game(name):
         return False
+
+    if is_named_super_bowl_game(name):
+        return True
 
     teams = extract_nfl_teams(name)
     football_classified = is_football_classified(
@@ -863,18 +884,16 @@ def fetch_nfl_playoff_dates():
 
             time.sleep(delay)
 
-    # Do not block the wife's all-events feed if the cross-reference
-    # source is temporarily unavailable. Explicit postseason wording
-    # still remains an active fallback in the standard-feed filter.
-    print(
-        "WARNING: NFL Playoffs calendar could not be "
-        "loaded after all attempts. Falling back to "
-        "explicit postseason wording only. "
-        f"Last error: {last_error}",
-        file=sys.stderr,
+    # Fail closed. The NFL Playoffs feed is an ownership dependency for
+    # the standard MetLife feed. Publishing without it could duplicate a
+    # postseason game whose Ticketmaster title contains only the matchup.
+    raise RuntimeError(
+        "NFL Playoffs calendar could not be loaded after "
+        f"{NFL_PLAYOFF_FETCH_ATTEMPTS} attempts. "
+        "Refusing to generate new MetLife calendar files so "
+        "the last known-good published feeds remain in place. "
+        f"Last error: {last_error}"
     )
-
-    return set()
 
 
 def read_existing_event_blocks(output_file):
