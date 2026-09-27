@@ -1,5 +1,9 @@
 import json
+import re
 import sys
+import time
+import urllib.error
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -12,8 +16,8 @@ ALL_EVENTS_OUTPUT_FILE = Path("metlife-stadium-all-events.ics")
 
 STANDARD_CALENDAR_NAME = "MetLife Stadium Events"
 STANDARD_CALENDAR_DESCRIPTION = (
-    "Upcoming events at MetLife Stadium, excluding New York Giants games, "
-    "Jets vs. Giants games, and NFL postseason games."
+    "Upcoming events at MetLife Stadium, excluding New York Giants games "
+    "and NFL postseason games covered by the user's other calendars."
 )
 
 ALL_EVENTS_CALENDAR_NAME = "MetLife Stadium All Events"
@@ -28,6 +32,14 @@ SPORTS_EVENT_DURATION_HOURS = 3
 DEFAULT_EVENT_DURATION_HOURS = 4
 CONCERT_END_HOUR = 23
 RETENTION_DAYS = 7
+
+NFL_PLAYOFF_CALENDAR_URL = (
+    "https://mmalinconico.github.io/"
+    "nfl-playoff-calendar/nfl-playoffs.ics"
+)
+NFL_PLAYOFF_FETCH_TIMEOUT_SECONDS = 20
+NFL_PLAYOFF_FETCH_ATTEMPTS = 3
+NFL_PLAYOFF_RETRY_DELAYS_SECONDS = (5, 15)
 
 # Keep DTSTAMP deterministic so the calendars do not change merely
 # because the GitHub Action ran again.
@@ -209,81 +221,272 @@ def should_skip_event(event):
     return False
 
 
-def is_jets_giants_game(name):
-    lower_name = " ".join(name.casefold().split())
+NFL_TEAM_ALIASES = {
+    "Arizona Cardinals": ("arizona cardinals", "cardinals"),
+    "Atlanta Falcons": ("atlanta falcons", "falcons"),
+    "Baltimore Ravens": ("baltimore ravens", "ravens"),
+    "Buffalo Bills": ("buffalo bills", "bills"),
+    "Carolina Panthers": ("carolina panthers", "panthers"),
+    "Chicago Bears": ("chicago bears", "bears"),
+    "Cincinnati Bengals": ("cincinnati bengals", "bengals"),
+    "Cleveland Browns": ("cleveland browns", "browns"),
+    "Dallas Cowboys": ("dallas cowboys", "cowboys"),
+    "Denver Broncos": ("denver broncos", "broncos"),
+    "Detroit Lions": ("detroit lions", "lions"),
+    "Green Bay Packers": ("green bay packers", "packers"),
+    "Houston Texans": ("houston texans", "texans"),
+    "Indianapolis Colts": ("indianapolis colts", "colts"),
+    "Jacksonville Jaguars": ("jacksonville jaguars", "jaguars"),
+    "Kansas City Chiefs": ("kansas city chiefs", "chiefs"),
+    "Las Vegas Raiders": ("las vegas raiders", "raiders"),
+    "Los Angeles Chargers": ("los angeles chargers", "chargers"),
+    "Los Angeles Rams": ("los angeles rams", "rams"),
+    "Miami Dolphins": ("miami dolphins", "dolphins"),
+    "Minnesota Vikings": ("minnesota vikings", "vikings"),
+    "New England Patriots": ("new england patriots", "patriots"),
+    "New Orleans Saints": ("new orleans saints", "saints"),
+    "New York Giants": ("new york giants", "ny giants", "giants"),
+    "New York Jets": ("new york jets", "ny jets", "jets"),
+    "Philadelphia Eagles": ("philadelphia eagles", "eagles"),
+    "Pittsburgh Steelers": ("pittsburgh steelers", "steelers"),
+    "San Francisco 49ers": ("san francisco 49ers", "49ers"),
+    "Seattle Seahawks": ("seattle seahawks", "seahawks"),
+    "Tampa Bay Buccaneers": ("tampa bay buccaneers", "buccaneers", "bucs"),
+    "Tennessee Titans": ("tennessee titans", "titans"),
+    "Washington Commanders": ("washington commanders", "commanders"),
+}
 
-    return (
-        "new york jets" in lower_name
-        and "new york giants" in lower_name
+POSTSEASON_TERMS = (
+    "postseason",
+    "playoff",
+    "wild card",
+    "wildcard",
+    "divisional",
+    "conference championship",
+    "afc championship",
+    "nfc championship",
+    "super bowl",
+)
+
+NFL_NON_GAME_TERMS = (
+    "opening night",
+    "experience",
+    "fan fest",
+    "fan festival",
+    "tailgate",
+    "watch party",
+    "draft",
+    "training camp",
+    "practice",
+    "tour",
+    "season tickets",
+    "parking",
+    "hospitality",
+    "suite",
+)
+
+MATCHUP_MARKERS = (
+    " vs ",
+    " vs. ",
+    " v ",
+    " v. ",
+    " @ ",
+    " at ",
+)
+
+
+def normalized_name(value):
+    return " ".join((value or "").casefold().split())
+
+
+def contains_phrase(text, phrase):
+    return bool(
+        re.search(
+            r"(?<![a-z0-9])"
+            + re.escape(phrase)
+            + r"(?![a-z0-9])",
+            text,
+        )
     )
 
 
-def is_nfl_event(event):
-    classifications = event.get(
+def event_classification_values(event):
+    values = []
+
+    for classification in event.get(
         "classifications",
         [],
-    )
-
-    for classification in classifications:
+    ):
         for key in ("segment", "genre", "subGenre"):
             value = classification.get(key)
 
-            if (
-                value
-                and value.casefold() == "nfl"
+            if value:
+                values.append(
+                    normalized_name(value)
+                )
+
+    return values
+
+
+def is_football_classified(event):
+    values = event_classification_values(event)
+
+    return (
+        "nfl" in values
+        or "football" in values
+    )
+
+
+def extract_nfl_teams(name):
+    lower_name = normalized_name(name)
+    teams = set()
+
+    for team, aliases in NFL_TEAM_ALIASES.items():
+        for alias in aliases:
+            if contains_phrase(
+                lower_name,
+                alias,
             ):
-                return True
+                teams.add(team)
+                break
+
+    return teams
+
+
+def is_known_nfl_non_game(name):
+    lower_name = normalized_name(name)
+
+    return any(
+        term in lower_name
+        for term in NFL_NON_GAME_TERMS
+    )
+
+
+def is_nfl_game(event):
+    name = event.get("name", "")
+    lower_name = normalized_name(name)
+
+    if not lower_name:
+        return False
+
+    if is_known_nfl_non_game(name):
+        return False
+
+    teams = extract_nfl_teams(name)
+    football_classified = is_football_classified(
+        event
+    )
+
+    # A matchup between two known NFL teams is a game even if
+    # Ticketmaster's classification is incomplete.
+    if len(teams) >= 2:
+        return True
+
+    # Ticketmaster can publish placeholders such as a team vs. TBD.
+    # Require football/NFL classification before treating a one-team
+    # matchup-style title as a game.
+    if football_classified and teams:
+        if any(
+            marker in f" {lower_name} "
+            for marker in MATCHUP_MARKERS
+        ):
+            return True
+
+        explicit_game_terms = (
+            "preseason game",
+            "regular season game",
+            "home game",
+            "away game",
+        )
+
+        if any(
+            term in lower_name
+            for term in explicit_game_terms
+        ):
+            return True
+
+    # Named postseason rounds can be valid game listings before teams
+    # are known. Non-game Super Bowl/NFL events were filtered above.
+    if (
+        football_classified
+        and any(
+            term in lower_name
+            for term in POSTSEASON_TERMS
+        )
+    ):
+        return True
 
     return False
 
 
-def is_nfl_postseason_game(event):
-    if not is_nfl_event(event):
+def is_giants_game(event):
+    if not is_nfl_game(event):
         return False
 
-    name = event.get("name", "")
-    lower_name = " ".join(name.casefold().split())
+    return (
+        "New York Giants"
+        in extract_nfl_teams(
+            event.get("name", "")
+        )
+    )
 
-    postseason_terms = (
-        "postseason",
-        "playoff",
-        "wild card",
-        "wildcard",
-        "divisional",
-        "conference championship",
-        "afc championship",
-        "nfc championship",
-        "super bowl",
+
+def is_explicit_nfl_postseason_game(event):
+    if not is_nfl_game(event):
+        return False
+
+    lower_name = normalized_name(
+        event.get("name", "")
     )
 
     return any(
         term in lower_name
-        for term in postseason_terms
+        for term in POSTSEASON_TERMS
     )
 
 
-def include_in_standard_calendar(event):
-    name = event.get("name", "")
-    lower_name = " ".join(name.casefold().split())
-
-    # Giants home games are already covered by the user's
-    # official New York Giants calendar.
-    if lower_name.startswith("new york giants"):
+def is_nfl_postseason_game(
+    event,
+    nfl_playoff_dates,
+):
+    if not is_nfl_game(event):
         return False
 
-    # Jets vs. Giants is also already covered by the Giants calendar,
-    # regardless of which team is designated as the home team.
-    if is_jets_giants_game(name):
+    # First use explicit Ticketmaster wording when it is available.
+    if is_explicit_nfl_postseason_game(event):
+        return True
+
+    # The separate NFL Playoffs calendar is the authoritative ownership
+    # reference. If an NFL game at MetLife falls on a date represented
+    # in that feed, the Playoffs calendar owns it even when Ticketmaster
+    # names the event only by the two teams.
+    local_date = event_local_date(event)
+
+    return (
+        local_date is not None
+        and local_date in nfl_playoff_dates
+    )
+
+
+def include_in_standard_calendar(
+    event,
+    nfl_playoff_dates,
+):
+    # Every actual Giants game belongs to the official Giants calendar,
+    # regardless of venue, opponent, or home/away designation.
+    if is_giants_game(event):
         return False
 
-    # All NFL postseason games are already covered by the user's
-    # separate NFL Playoffs calendar, except Giants games, which are
-    # covered by the official New York Giants calendar.
-    if is_nfl_postseason_game(event):
+    # Every other NFL postseason game belongs to the separate NFL
+    # Playoffs calendar. Preseason and regular-season games remain in
+    # the MetLife feed, regardless of which team is designated home.
+    if is_nfl_postseason_game(
+        event,
+        nfl_playoff_dates,
+    ):
         return False
 
     return True
-
 
 def event_uid(event, all_events=False):
     event_id = event["id"]
@@ -508,6 +711,172 @@ def unfold_ics_lines(text):
     return unfolded
 
 
+def calendar_date_from_dtstart_line(line):
+    if not line or ":" not in line:
+        return None
+
+    prefix, value = line.split(":", 1)
+    value = value.strip()
+
+    if "VALUE=DATE" in prefix:
+        try:
+            return datetime.strptime(
+                value,
+                "%Y%m%d",
+            ).date()
+        except ValueError:
+            return None
+
+    try:
+        if value.endswith("Z"):
+            parsed = datetime.strptime(
+                value,
+                "%Y%m%dT%H%M%SZ",
+            ).replace(
+                tzinfo=timezone.utc
+            )
+        else:
+            parsed = datetime.strptime(
+                value,
+                "%Y%m%dT%H%M%S",
+            ).replace(
+                tzinfo=LOCAL_TIMEZONE
+            )
+    except ValueError:
+        return None
+
+    return parsed.astimezone(
+        LOCAL_TIMEZONE
+    ).date()
+
+
+def parse_calendar_event_dates(calendar_text):
+    dates = set()
+    current_dtstart = None
+    inside_event = False
+
+    for line in unfold_ics_lines(calendar_text):
+        if line == "BEGIN:VEVENT":
+            inside_event = True
+            current_dtstart = None
+            continue
+
+        if line == "END:VEVENT":
+            if inside_event and current_dtstart:
+                event_date = (
+                    calendar_date_from_dtstart_line(
+                        current_dtstart
+                    )
+                )
+
+                if event_date:
+                    dates.add(event_date)
+
+            inside_event = False
+            current_dtstart = None
+            continue
+
+        if (
+            inside_event
+            and (
+                line.startswith("DTSTART:")
+                or line.startswith("DTSTART;")
+            )
+        ):
+            current_dtstart = line
+
+    return dates
+
+
+def fetch_nfl_playoff_dates():
+    last_error = None
+
+    for attempt in range(
+        1,
+        NFL_PLAYOFF_FETCH_ATTEMPTS + 1,
+    ):
+        try:
+            request = urllib.request.Request(
+                NFL_PLAYOFF_CALENDAR_URL,
+                headers={
+                    "User-Agent": (
+                        "MetLife-Stadium-Calendar/1.0"
+                    ),
+                },
+            )
+
+            with urllib.request.urlopen(
+                request,
+                timeout=(
+                    NFL_PLAYOFF_FETCH_TIMEOUT_SECONDS
+                ),
+            ) as response:
+                calendar_text = (
+                    response
+                    .read()
+                    .decode("utf-8-sig")
+                )
+
+            dates = parse_calendar_event_dates(
+                calendar_text
+            )
+
+            if not dates:
+                raise RuntimeError(
+                    "NFL Playoffs calendar contained "
+                    "no event dates."
+                )
+
+            print(
+                "NFL Playoffs ownership dates loaded: "
+                f"{len(dates)}"
+            )
+
+            return dates
+
+        except (
+            urllib.error.URLError,
+            TimeoutError,
+            RuntimeError,
+            UnicodeDecodeError,
+        ) as error:
+            last_error = error
+
+            if (
+                attempt
+                >= NFL_PLAYOFF_FETCH_ATTEMPTS
+            ):
+                break
+
+            delay = (
+                NFL_PLAYOFF_RETRY_DELAYS_SECONDS[
+                    attempt - 1
+                ]
+            )
+
+            print(
+                "Could not load NFL Playoffs calendar: "
+                f"{error}. Retrying in {delay} seconds "
+                f"(attempt {attempt + 1} of "
+                f"{NFL_PLAYOFF_FETCH_ATTEMPTS})..."
+            )
+
+            time.sleep(delay)
+
+    # Do not block the wife's all-events feed if the cross-reference
+    # source is temporarily unavailable. Explicit postseason wording
+    # still remains an active fallback in the standard-feed filter.
+    print(
+        "WARNING: NFL Playoffs calendar could not be "
+        "loaded after all attempts. Falling back to "
+        "explicit postseason wording only. "
+        f"Last error: {last_error}",
+        file=sys.stderr,
+    )
+
+    return set()
+
+
 def read_existing_event_blocks(output_file):
     if not output_file.exists():
         return []
@@ -686,6 +1055,7 @@ def generate_feed(
     calendar_name,
     calendar_description,
     all_events,
+    nfl_playoff_dates,
 ):
     # Read the existing file before overwriting it so recently completed
     # events can survive Ticketmaster removing them from its API results.
@@ -734,7 +1104,10 @@ def generate_feed(
 
         if (
             not all_events
-            and not include_in_standard_calendar(event)
+            and not include_in_standard_calendar(
+                event,
+                nfl_playoff_dates,
+            )
         ):
             filtered_count += 1
             continue
@@ -776,7 +1149,10 @@ def generate_feed(
     ):
         if (
             not all_events
-            and not include_in_standard_calendar(event)
+            and not include_in_standard_calendar(
+                event,
+                nfl_playoff_dates,
+            )
         ):
             continue
 
@@ -916,12 +1292,17 @@ def main():
             [],
         )
 
+        nfl_playoff_dates = (
+            fetch_nfl_playoff_dates()
+        )
+
         generate_feed(
             events=events,
             output_file=STANDARD_OUTPUT_FILE,
             calendar_name=STANDARD_CALENDAR_NAME,
             calendar_description=STANDARD_CALENDAR_DESCRIPTION,
             all_events=False,
+            nfl_playoff_dates=nfl_playoff_dates,
         )
 
         generate_feed(
@@ -930,6 +1311,7 @@ def main():
             calendar_name=ALL_EVENTS_CALENDAR_NAME,
             calendar_description=ALL_EVENTS_CALENDAR_DESCRIPTION,
             all_events=True,
+            nfl_playoff_dates=nfl_playoff_dates,
         )
 
         print()
