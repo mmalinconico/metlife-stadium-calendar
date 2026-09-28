@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_FN-NOyL@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. Green Bay Packers
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-jets-v-green-bay-east-ruthe
- rford-new-jersey-09-20-2026/event/00006488E18E0E5F
-URL:https://www.ticketmaster.com/new-york-jets-v-green-bay-east-rutherford-
- new-jersey-09-20-2026/event/00006488E18E0E5F
-DTSTART:20260920T170000Z
-DTEND:20260920T200000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6eBCva@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New York Giants vs. Tennessee Titans
