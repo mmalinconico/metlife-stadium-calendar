@@ -295,6 +295,32 @@ MATCHUP_MARKERS = (
 )
 
 
+# Team sports where "home vs. away" / "away at home" naming is meaningful.
+# Ticketmaster does not expose separate homeTeam/awayTeam fields in the
+# Discovery API, so matchup direction comes from the event title itself.
+TEAM_SPORT_GENRES = {
+    "football",
+    "soccer",
+    "baseball",
+    "basketball",
+    "hockey",
+    "ice hockey",
+    "lacrosse",
+    "rugby",
+    "indoor soccer",
+}
+
+VERSUS_MATCHUP_PATTERN = re.compile(
+    r"^\s*(.+?)\s+(?:vs\.?|v\.?)\s+(.+?)\s*$",
+    re.IGNORECASE,
+)
+
+AWAY_HOME_MATCHUP_PATTERN = re.compile(
+    r"^\s*(.+?)\s+(?:@|at)\s+(.+?)\s*$",
+    re.IGNORECASE,
+)
+
+
 def normalized_name(value):
     return " ".join((value or "").casefold().split())
 
@@ -341,6 +367,121 @@ def event_classification_values(event):
         )
 
     return values
+
+
+def normalized_matchup_participant(value):
+    return re.sub(
+        r"[^a-z0-9]+",
+        " ",
+        str(value or "").casefold(),
+    ).strip()
+
+
+def matchup_attraction_names(event):
+    names = set()
+
+    for attraction in event.get("attractions", []):
+        name = normalized_matchup_participant(
+            attraction.get("name", "")
+        )
+
+        if name:
+            names.add(name)
+
+    return names
+
+
+def is_team_sport_event(event):
+    values = set(event_classification_values(event))
+
+    return (
+        "sports" in values
+        and bool(values.intersection(TEAM_SPORT_GENRES))
+    )
+
+
+def matchup_participants_are_supported(
+    event,
+    first_participant,
+    second_participant,
+):
+    attraction_names = matchup_attraction_names(event)
+
+    first = normalized_matchup_participant(
+        first_participant
+    )
+    second = normalized_matchup_participant(
+        second_participant
+    )
+
+    if first in attraction_names and second in attraction_names:
+        return True
+
+    # NFL team aliases provide a fallback if Ticketmaster omits one of the
+    # attraction records but still publishes a clean, recognizable matchup.
+    first_nfl_teams = {
+        team
+        for team, aliases in NFL_TEAM_ALIASES.items()
+        if first in {
+            normalized_matchup_participant(alias)
+            for alias in aliases
+        }
+    }
+    second_nfl_teams = {
+        team
+        for team, aliases in NFL_TEAM_ALIASES.items()
+        if second in {
+            normalized_matchup_participant(alias)
+            for alias in aliases
+        }
+    }
+
+    return (
+        len(first_nfl_teams) == 1
+        and len(second_nfl_teams) == 1
+        and first_nfl_teams != second_nfl_teams
+    )
+
+
+def calendar_event_name(event):
+    name = str(event.get("name") or "").strip()
+
+    if not name or not is_team_sport_event(event):
+        return name
+
+    away_home_match = AWAY_HOME_MATCHUP_PATTERN.fullmatch(
+        name
+    )
+
+    if away_home_match:
+        away = away_home_match.group(1).strip()
+        home = away_home_match.group(2).strip()
+
+        if matchup_participants_are_supported(
+            event,
+            away,
+            home,
+        ):
+            return f"{away} @ {home}"
+
+        return name
+
+    versus_match = VERSUS_MATCHUP_PATTERN.fullmatch(
+        name
+    )
+
+    if versus_match:
+        home = versus_match.group(1).strip()
+        away = versus_match.group(2).strip()
+
+        if matchup_participants_are_supported(
+            event,
+            home,
+            away,
+        ):
+            return f"{away} @ {home}"
+
+    return name
 
 
 def is_football_classified(event):
@@ -540,6 +681,7 @@ def include_in_standard_calendar(
 
     return True
 
+
 def event_uid(event, all_events=False):
     event_id = event["id"]
 
@@ -661,7 +803,7 @@ def calculate_event_end(event, start_datetime):
 
 
 def build_event_lines(event, all_events=False):
-    name = event["name"]
+    name = calendar_event_name(event)
     start = event.get("start", {})
 
     local_date = start.get("localDate")
