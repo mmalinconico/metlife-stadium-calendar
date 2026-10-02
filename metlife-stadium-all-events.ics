@@ -24,7 +24,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGFbgBDk1tN@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:AC/DC - POWER UP TOUR 2026 
+SUMMARY:AC/DC - POWER UP TOUR 2026
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Metal / Nu-Metal.\n
  \nSource: https://www.ticketmaster.com/acdc-power-up-tour-2026-east-ruther
@@ -37,7 +37,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6ecuTM@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. Arizona Cardinals
+SUMMARY:Arizona Cardinals @ New York Giants
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-giants-vs-arizona-cardinals
@@ -50,7 +50,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-J8Bt@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. Cleveland Browns
+SUMMARY:Cleveland Browns @ New York Jets
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-cleveland-browns-eas
@@ -76,7 +76,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6eVCZ0@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. New Orleans Saints
+SUMMARY:New Orleans Saints @ New York Giants
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-giants-vs-new-orleans-east-
@@ -89,7 +89,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-OOzB@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. Miami Dolphins
+SUMMARY:Miami Dolphins @ New York Jets
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-miami-dolphins-east-
@@ -102,7 +102,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-xZy2@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. Las Vegas Raiders
+SUMMARY:Las Vegas Raiders @ New York Jets
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-las-vegas-east-ruthe
@@ -115,7 +115,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6eDmv8@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. Washington Commanders
+SUMMARY:Washington Commanders @ New York Giants
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-giants-vs-washington-comman
@@ -128,7 +128,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-EYBU@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. Buffalo Bills
+SUMMARY:Buffalo Bills @ New York Jets
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-buffalo-bills-east-r
@@ -141,7 +141,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6ewmZ_@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. Jacksonville Jaguars
+SUMMARY:Jacksonville Jaguars @ New York Giants
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-giants-vs-jacksonville-jagu
@@ -154,7 +154,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6ezmvd@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. San Francisco 49ers
+SUMMARY:San Francisco 49ers @ New York Giants
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-giants-vs-san-francisco-eas
@@ -167,7 +167,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-Z7r9jZ1A7rAjs@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:Army Black Knights Football vs. Navy Midshipmen Football
+SUMMARY:Navy Midshipmen Football @ Army Black Knights Football
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / College
  .\n\nSource: https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
@@ -178,7 +178,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-PZB_@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. Denver Broncos
+SUMMARY:Denver Broncos @ New York Jets
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-denver-broncos-east-
@@ -191,7 +191,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6eRmZe@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. Cleveland Browns
+SUMMARY:Cleveland Browns @ New York Giants
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-giants-vs-cleveland-browns-
@@ -204,7 +204,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-qYMW@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. New England Patriots
+SUMMARY:New England Patriots @ New York Jets
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-new-england-east-rut
@@ -217,7 +217,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-LZzc@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:New York Jets v. Minnesota Vikings
+SUMMARY:Minnesota Vikings @ New York Jets
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  nSource: https://www.ticketmaster.com/new-york-jets-v-minnesota-vikings-ea
