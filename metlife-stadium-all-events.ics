@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_a6eBCva@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:New York Giants vs. Tennessee Titans
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-giants-vs-tennessee-titans-
- east-rutherford-new-jersey-09-27-2026/event/00006491C2E8E049
-URL:https://www.ticketmaster.com/new-york-giants-vs-tennessee-titans-east-r
- utherford-new-jersey-09-27-2026/event/00006491C2E8E049
-DTSTART:20260927T170000Z
-DTEND:20260927T200000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGFbgBDk1tN@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:AC/DC - POWER UP TOUR 2026
@@ -165,17 +152,6 @@ DTSTART:20261206T180000Z
 DTEND:20261206T210000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-all-Z7r9jZ1A7rAjs@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Navy Midshipmen Football @ Army Black Knights Football
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / College
- .\n\nSource: https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
-URL:https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
-DTSTART:20261212T200000Z
-DTEND:20261212T230000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-PZB_@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Denver Broncos @ New York Jets
@@ -226,6 +202,19 @@ URL:https://www.ticketmaster.com/new-york-jets-v-minnesota-vikings-east-rut
  herford-new-jersey-01-03-2027/event/00006488E17C0E2D
 DTSTART:20270103T180000Z
 DTEND:20270103T210000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_8LxPD6s@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Monster Energy AMA Supercross
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Motorsports/Racing
+ .\n\nSource: https://www.ticketmaster.com/monster-energy-ama-supercross-ea
+ st-rutherford-new-jersey-04-17-2027/event/00006507E297B1F1
+URL:https://www.ticketmaster.com/monster-energy-ama-supercross-east-rutherf
+ ord-new-jersey-04-17-2027/event/00006507E297B1F1
+DTSTART:20270417T223000Z
+DTEND:20270418T013000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_3Cwtd0z@github-calendar

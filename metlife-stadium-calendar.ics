@@ -88,17 +88,6 @@ DTSTART:20261115T180000Z
 DTEND:20261115T210000Z
 END:VEVENT
 BEGIN:VEVENT
-UID:metlife-Z7r9jZ1A7rAjs@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Navy Midshipmen Football @ Army Black Knights Football
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / College
- .\n\nSource: https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
-URL:https://www.ticketmaster.com/event/Z7r9jZ1A7rAjs
-DTSTART:20261212T200000Z
-DTEND:20261212T230000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-k7vGF_FN-PZB_@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Denver Broncos @ New York Jets
@@ -136,6 +125,19 @@ URL:https://www.ticketmaster.com/new-york-jets-v-minnesota-vikings-east-rut
  herford-new-jersey-01-03-2027/event/00006488E17C0E2D
 DTSTART:20270103T180000Z
 DTEND:20270103T210000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-k7vGF_8LxPD6s@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Monster Energy AMA Supercross
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Motorsports/Racing
+ .\n\nSource: https://www.ticketmaster.com/monster-energy-ama-supercross-ea
+ st-rutherford-new-jersey-04-17-2027/event/00006507E297B1F1
+URL:https://www.ticketmaster.com/monster-energy-ama-supercross-east-rutherf
+ ord-new-jersey-04-17-2027/event/00006507E297B1F1
+DTSTART:20270417T223000Z
+DTEND:20270418T013000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-k7vGF_3Cwtd0z@github-calendar
