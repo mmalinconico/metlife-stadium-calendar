@@ -152,6 +152,19 @@ DTSTART:20261206T180000Z
 DTEND:20261206T210000Z
 END:VEVENT
 BEGIN:VEVENT
+UID:metlife-all-k7vGF_8K8oPjT@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Army-Navy Game presented by USAA
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / College
+ .\n\nSource: https://www.ticketmaster.com/armynavy-game-presented-by-usaa-
+ east-rutherford-new-jersey-12-12-2026/event/00006504D046573F
+URL:https://www.ticketmaster.com/armynavy-game-presented-by-usaa-east-ruthe
+ rford-new-jersey-12-12-2026/event/00006504D046573F
+DTSTART:20261212T200000Z
+DTEND:20261212T230000Z
+END:VEVENT
+BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-PZB_@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Denver Broncos @ New York Jets
