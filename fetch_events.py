@@ -236,16 +236,48 @@ def fetch_events(session, api_key, venue_id):
             },
         )
 
-        events = data.get("_embedded", {}).get("events", [])
+        # A successful HTTP response can still be an incomplete result.
+        # Reject malformed/missing pagination rather than emptying the feeds.
+        if not isinstance(data, dict):
+            raise RuntimeError("Ticketmaster returned a non-object response")
+        page_info = data.get("page")
+        if not isinstance(page_info, dict):
+            raise RuntimeError("Ticketmaster response missing pagination metadata")
+        total_pages = page_info.get("totalPages")
+        total_elements = page_info.get("totalElements")
+        if (
+            not isinstance(total_pages, int)
+            or total_pages < 1
+            or not isinstance(total_elements, int)
+            or total_elements < 0
+            or total_pages > 1000
+        ):
+            raise RuntimeError("Ticketmaster returned invalid pagination totals")
+        if page_info.get("number", page_number) != page_number:
+            raise RuntimeError("Ticketmaster returned the wrong event page")
+        embedded = data.get("_embedded", {})
+        if not isinstance(embedded, dict):
+            raise RuntimeError("Ticketmaster returned invalid embedded data")
+        events = embedded.get("events", [])
+        if not isinstance(events, list):
+            raise RuntimeError("Ticketmaster returned invalid event records")
+        if total_elements > 0 and not events:
+            raise RuntimeError("Ticketmaster reported events but returned none")
+        if any(not isinstance(event, dict) or not event.get("id") for event in events):
+            raise RuntimeError("Ticketmaster returned an event without an ID")
         all_events.extend(events)
-
-        page_info = data.get("page", {})
-        total_pages = page_info.get("totalPages", 1)
 
         if page_number + 1 >= total_pages:
             break
 
         page_number += 1
+
+    # A partial series of otherwise valid pages is still unsafe.
+    if len(all_events) < total_elements:
+        raise RuntimeError(
+            "Ticketmaster pagination was incomplete "
+            f"({len(all_events)} of {total_elements} events received)"
+        )
 
     deduplicated = {}
 
