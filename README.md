@@ -48,17 +48,21 @@ Completed events remain in both calendars for approximately 7 days before being 
 
 Because Ticketmaster may stop returning an event shortly after it occurs, the generator also uses the previously published calendar as a short-term historical cache so recent completed events remain available.
 
+A future event temporarily missing from Ticketmaster is carried forward for up to 48 hours, unless it is explicitly canceled or excluded by feed rules. Sudden large losses or incomplete API responses stop publication rather than replace a healthy calendar.
+
 ## Updates
 
 A GitHub Actions workflow runs twice daily and can also be run manually.
 
 The workflow:
 
-1. Fetches MetLife Stadium events from the Ticketmaster Discovery API.
-2. Removes ancillary and non-event listings.
-3. Generates both calendar feeds.
-4. Validates both `.ics` files.
-5. Commits updated calendar files only when their contents change.
+1. Runs offline regression tests.
+2. Fetches and checks Ticketmaster event data, excluding ancillary listings.
+3. Generates both calendar feeds using existing historical caches.
+4. Validates both `.ics` files for format and event consistency.
+5. Commits only if a calendar actually changes.
+
+A separate **Test MetLife Stadium Calendar** workflow checks pull requests targeting `main`. It does not contact Ticketmaster or publish feeds. Tests may also be run locally using `python -m unittest -v test_metlife`.
 
 ## Calendar Details
 
