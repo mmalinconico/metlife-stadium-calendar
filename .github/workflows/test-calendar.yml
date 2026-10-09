@@ -1,0 +1,33 @@
+name: Test MetLife Stadium Calendar
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Compile calendar code and validators
+        run: python -m py_compile fetch_events.py generate_calendar.py check_source.py validate_ics.py test_metlife.py
+
+      - name: Run offline regression tests
+        run: python -m unittest -v test_metlife
+
+      - name: Validate existing published ICS snapshots
+        run: python validate_ics.py
