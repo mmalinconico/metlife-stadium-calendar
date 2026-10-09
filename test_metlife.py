@@ -66,7 +66,7 @@ class FilterAndOwnership(unittest.TestCase):
             ("Super Bowl LXI", False),
         )
         for i, (name, expected) in enumerate(cases):
-            e = event(name, str(i), local=playoff)
+            e = event(name, str(i), local=playoff - timedelta(days=1) if i == 0 else playoff)
             with self.subTest(name=name):
                 self.assertEqual(cal.include_in_standard_calendar(e, {playoff}), expected)
         self.assertTrue(cal.include_in_standard_calendar(
