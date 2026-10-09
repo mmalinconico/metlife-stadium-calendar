@@ -32,6 +32,8 @@ SPORTS_EVENT_DURATION_HOURS = 3
 DEFAULT_EVENT_DURATION_HOURS = 4
 CONCERT_END_HOUR = 23
 RETENTION_DAYS = 7
+# A temporary Ticketmaster omission may not erase a future event immediately.
+MISSING_UPCOMING_GRACE_HOURS = 48
 
 NFL_PLAYOFF_CALENDAR_URL = (
     "https://mmalinconico.github.io/"
@@ -1221,6 +1223,46 @@ def should_retain_existing_event(
     return start["datetime"] <= now_local
 
 
+def retain_temporarily_missing_upcoming(block, now_local):
+    """Carry forward a future event for a bounded 48-hour source omission.
+
+    Record the first-missing timestamp in the VEVENT itself to avoid
+    additional persistent files and repeated timestamp-only commits.
+    """
+    start = existing_event_start(block)
+    if start is None:
+        return None
+    if start["all_day"]:
+        if start["local_date"] <= now_local.date():
+            return None
+    elif start["datetime"] <= now_local:
+        return None
+
+    missing_since = get_property_value(block, "X-METLIFE-MISSING-SINCE")
+    if missing_since:
+        try:
+            first_missing = datetime.strptime(
+                missing_since, "%Y%m%dT%H%M%SZ"
+            ).replace(tzinfo=timezone.utc)
+        except ValueError:
+            return None
+    else:
+        first_missing = now_local.astimezone(timezone.utc)
+
+    if now_local.astimezone(timezone.utc) - first_missing >= timedelta(
+        hours=MISSING_UPCOMING_GRACE_HOURS
+    ):
+        return None
+
+    if missing_since:
+        return block
+
+    return block[:-1] + [
+        f"X-METLIFE-MISSING-SINCE:{format_utc_datetime(first_missing)}",
+        block[-1],
+    ]
+
+
 def existing_event_sort_datetime(block):
     start = existing_event_start(block)
 
@@ -1297,9 +1339,17 @@ def generate_feed(
 
     calendar_items = []
     active_uids = set()
+    # Never revive an event explicitly cancelled or deliberately excluded
+    # from this feed (e.g. a newly identified Giants/postseason game).
+    source_uids = {
+        event_uid(event, all_events=all_events)
+        for event in events
+        if event.get("id")
+    }
 
     current_count = 0
     retained_count = 0
+    temporarily_missing_count = 0
     bootstrap_count = 0
     filtered_count = 0
     skipped_count = 0
@@ -1401,26 +1451,27 @@ def generate_feed(
         if not uid:
             continue
 
-        if uid in active_uids:
+        if uid in active_uids or uid in source_uids:
             continue
 
-        if not should_retain_existing_event(
-            block,
-            now_local,
-            cutoff_date,
-        ):
-            continue
+        if should_retain_existing_event(block, now_local, cutoff_date):
+            preserved_block = block
+            retained_count += 1
+        else:
+            preserved_block = retain_temporarily_missing_upcoming(
+                block, now_local
+            )
+            if preserved_block is None:
+                continue
+            temporarily_missing_count += 1
 
         active_uids.add(uid)
-
         calendar_items.append(
             (
-                existing_event_sort_datetime(block),
-                block,
+                existing_event_sort_datetime(preserved_block),
+                preserved_block,
             )
         )
-
-        retained_count += 1
 
     calendar_items.sort(
         key=lambda item: item[0]
@@ -1461,6 +1512,10 @@ def generate_feed(
     print(
         f"Recent completed events retained: "
         f"{retained_count}"
+    )
+    print(
+        f"Temporarily missing upcoming events protected: "
+        f"{temporarily_missing_count}"
     )
     print(
         f"Bootstrap recent events restored: "
