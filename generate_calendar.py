@@ -449,6 +449,21 @@ def calendar_event_name(event):
     if not name or not is_team_sport_event(event):
         return name
 
+    # The 2026 Army-Navy Game has a verified designated home team: Army.
+    # Ticketmaster also sells it under a promotional title without "vs.".
+    # Keep this narrowly scoped to that game and date, rather than assuming
+    # home/away for other neutral-site contests.
+    if (
+        re.fullmatch(
+            r"(?:127th )?army navy game(?: presented by usaa)?",
+            normalized_matchup_participant(name),
+        )
+        and event_local_date(event) is not None
+        and event_local_date(event).isoformat() == "2026-12-12"
+        and is_football_classified(event)
+    ):
+        return "Navy Midshipmen Football @ Army Black Knights Football"
+
     away_home_match = AWAY_HOME_MATCHUP_PATTERN.fullmatch(
         name
     )
