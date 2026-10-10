@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGFbgBDk1tN@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:AC/DC - POWER UP TOUR 2026
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Metal / Nu-Metal.\n
- \nSource: https://www.ticketmaster.com/acdc-power-up-tour-2026-east-ruther
- ford-new-jersey-10-02-2026/event/0000635EBB18AA63
-URL:https://www.ticketmaster.com/acdc-power-up-tour-2026-east-rutherford-ne
- w-jersey-10-02-2026/event/0000635EBB18AA63
-DTSTART:20261002T230000Z
-DTEND:20261003T030000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6ecuTM@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Arizona Cardinals @ New York Giants
