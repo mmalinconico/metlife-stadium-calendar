@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_a6ecuTM@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Arizona Cardinals @ New York Giants
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-giants-vs-arizona-cardinals
- -east-rutherford-new-jersey-10-04-2026/event/00006491C2B4DFF7
-URL:https://www.ticketmaster.com/new-york-giants-vs-arizona-cardinals-east-
- rutherford-new-jersey-10-04-2026/event/00006491C2B4DFF7
-DTSTART:20261004T170000Z
-DTEND:20261004T200000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-J8Bt@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Cleveland Browns @ New York Jets
