@@ -204,6 +204,32 @@ DTSTART:20270417T223000Z
 DTEND:20270418T013000Z
 END:VEVENT
 BEGIN:VEVENT
+UID:metlife-all-k7vGF_fSxRnwp@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Zach Bryan
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
+ ce: https://www.ticketmaster.com/zach-bryan-east-rutherford-new-jersey-05-
+ 14-2027/event/0000654CE2BEAC96
+URL:https://www.ticketmaster.com/zach-bryan-east-rutherford-new-jersey-05-1
+ 4-2027/event/0000654CE2BEAC96
+DTSTART:20270514T230000Z
+DTEND:20270515T030000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_fS0cBHD@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Zach Bryan
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
+ ce: https://www.ticketmaster.com/zach-bryan-east-rutherford-new-jersey-05-
+ 15-2027/event/0000654CE4B7AF3B
+URL:https://www.ticketmaster.com/zach-bryan-east-rutherford-new-jersey-05-1
+ 5-2027/event/0000654CE4B7AF3B
+DTSTART:20270515T230000Z
+DTEND:20270516T030000Z
+END:VEVENT
+BEGIN:VEVENT
 UID:metlife-all-k7vGF_3Cwtd0z@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Kenny Chesney: The Original Vibe Room Tour with Eric Church
