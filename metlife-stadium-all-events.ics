@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_FN-J8Bt@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Cleveland Browns @ New York Jets
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-jets-v-cleveland-browns-eas
- t-rutherford-new-jersey-10-11-2026/event/00006488E1990EA9
-URL:https://www.ticketmaster.com/new-york-jets-v-cleveland-browns-east-ruth
- erford-new-jersey-10-11-2026/event/00006488E1990EA9
-DTSTART:20261011T170000Z
-DTEND:20261011T200000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_aKApqSB@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:The R&B Tour - Starring Usher Raymond & Chris Brown
@@ -228,6 +215,19 @@ URL:https://www.ticketmaster.com/zach-bryan-east-rutherford-new-jersey-05-1
  5-2027/event/0000654CE4B7AF3B
 DTSTART:20270515T230000Z
 DTEND:20270516T030000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_4eVgQWY@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Bon Jovi
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
+ ce: https://www.ticketmaster.com/bon-jovi-east-rutherford-new-jersey-07-15
+ -2027/event/00006550B4D5AF70
+URL:https://www.ticketmaster.com/bon-jovi-east-rutherford-new-jersey-07-15-
+ 2027/event/00006550B4D5AF70
+DTSTART:20270715T223000Z
+DTEND:20270716T030000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_3Cwtd0z@github-calendar
