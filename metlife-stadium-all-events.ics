@@ -219,13 +219,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_4eVgQWY@github-calendar
 DTSTAMP:20260905T120000Z
-SUMMARY:Bon Jovi
+SUMMARY:Bon Jovi: Forever Tour
 LOCATION:MetLife Stadium
 DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
- ce: https://www.ticketmaster.com/bon-jovi-east-rutherford-new-jersey-07-15
- -2027/event/00006550B4D5AF70
-URL:https://www.ticketmaster.com/bon-jovi-east-rutherford-new-jersey-07-15-
- 2027/event/00006550B4D5AF70
+ ce: https://www.ticketmaster.com/bon-jovi-forever-tour-east-rutherford-new
+ -jersey-07-15-2027/event/00006550B4D5AF70
+URL:https://www.ticketmaster.com/bon-jovi-forever-tour-east-rutherford-new-
+ jersey-07-15-2027/event/00006550B4D5AF70
 DTSTART:20270715T223000Z
 DTEND:20270716T030000Z
 END:VEVENT
