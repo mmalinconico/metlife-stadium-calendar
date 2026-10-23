@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_aKApqSB@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:The R&B Tour - Starring Usher Raymond & Chris Brown
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / R&B.\n\nSource: htt
- ps://www.ticketmaster.com/the-rb-tour-starring-usher-raymond-east-rutherfo
- rd-new-jersey-10-15-2026/event/00006494C559DCFA
-URL:https://www.ticketmaster.com/the-rb-tour-starring-usher-raymond-east-ru
- therford-new-jersey-10-15-2026/event/00006494C559DCFA
-DTSTART:20261015T233000Z
-DTEND:20261016T030000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6eVCZ0@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:New Orleans Saints @ New York Giants
