@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_a6eVCZ0@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:New Orleans Saints @ New York Giants
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-giants-vs-new-orleans-east-
- rutherford-new-jersey-10-18-2026/event/00006491C2D0E024
-URL:https://www.ticketmaster.com/new-york-giants-vs-new-orleans-east-ruther
- ford-new-jersey-10-18-2026/event/00006491C2D0E024
-DTSTART:20261018T170000Z
-DTEND:20261018T200000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_FN-OOzB@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Miami Dolphins @ New York Jets
