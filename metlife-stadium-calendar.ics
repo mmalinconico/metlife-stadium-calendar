@@ -140,6 +140,19 @@ DTSTART:20270515T230000Z
 DTEND:20270516T030000Z
 END:VEVENT
 BEGIN:VEVENT
+UID:metlife-k7vGF_4mE3P--@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Noah Kahan: The Last Of The Bugs World Tour
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
+ ce: https://www.ticketmaster.com/noah-kahan-the-last-of-the-east-rutherfor
+ d-new-jersey-06-18-2027/event/0000655BA74A5861
+URL:https://www.ticketmaster.com/noah-kahan-the-last-of-the-east-rutherford
+ -new-jersey-06-18-2027/event/0000655BA74A5861
+DTSTART:20270618T223000Z
+DTEND:20270619T030000Z
+END:VEVENT
+BEGIN:VEVENT
 UID:metlife-k7vGF_4eVgQWY@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Bon Jovi: Forever Tour
