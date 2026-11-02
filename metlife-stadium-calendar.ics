@@ -10,19 +10,6 @@ X-WR-CALDESC:Upcoming events at MetLife Stadium\, excluding New York Giants
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-OOzB@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Miami Dolphins @ New York Jets
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-jets-v-miami-dolphins-east-
- rutherford-new-jersey-10-25-2026/event/00006488E1820E3A
-URL:https://www.ticketmaster.com/new-york-jets-v-miami-dolphins-east-ruther
- ford-new-jersey-10-25-2026/event/00006488E1820E3A
-DTSTART:20261025T170000Z
-DTEND:20261025T200000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-k7vGF_FN-xZy2@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Las Vegas Raiders @ New York Jets
