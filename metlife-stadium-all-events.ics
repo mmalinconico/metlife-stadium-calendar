@@ -178,6 +178,19 @@ DTSTART:20270618T223000Z
 DTEND:20270619T030000Z
 END:VEVENT
 BEGIN:VEVENT
+UID:metlife-all-k7vGF_pEvLzwU@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Noah Kahan: The Last Of The Bugs World Tour
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
+ ce: https://www.ticketmaster.com/noah-kahan-the-last-of-the-east-rutherfor
+ d-new-jersey-06-19-2027/event/00006569C17F8CB6
+URL:https://www.ticketmaster.com/noah-kahan-the-last-of-the-east-rutherford
+ -new-jersey-06-19-2027/event/00006569C17F8CB6
+DTSTART:20270619T223000Z
+DTEND:20270620T030000Z
+END:VEVENT
+BEGIN:VEVENT
 UID:metlife-all-k7vGF_pCNX6a9@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Stray Kids World Tour [RUN IT EAST RUTHERFORD]
