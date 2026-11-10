@@ -9,19 +9,6 @@ X-WR-CALDESC:All legitimate public events at MetLife Stadium.
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-all-k7vGF_FN-xZy2@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Las Vegas Raiders @ New York Jets
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-jets-v-las-vegas-east-ruthe
- rford-new-jersey-11-01-2026/event/00006488E1880E4F
-URL:https://www.ticketmaster.com/new-york-jets-v-las-vegas-east-rutherford-
- new-jersey-11-01-2026/event/00006488E1880E4F
-DTSTART:20261101T180000Z
-DTEND:20261101T210000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6eDmv8@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:Washington Commanders @ New York Giants
@@ -57,8 +44,8 @@ DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
  ars-east-rutherford-new-jersey-11-22-2026/event/00006491C2CAE019
 URL:https://www.ticketmaster.com/new-york-giants-vs-jacksonville-jaguars-ea
  st-rutherford-new-jersey-11-22-2026/event/00006491C2CAE019
-DTSTART:20261122T180000Z
-DTEND:20261122T210000Z
+DTSTART:20261122T212500Z
+DTEND:20261123T002500Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6ezmvd@github-calendar
@@ -189,6 +176,19 @@ URL:https://www.ticketmaster.com/noah-kahan-the-last-of-the-east-rutherford
  -new-jersey-06-18-2027/event/0000655BA74A5861
 DTSTART:20270618T223000Z
 DTEND:20270619T030000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_pCNX6a9@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:Stray Kids World Tour [RUN IT EAST RUTHERFORD]
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Pop / K-Pop.\n\nSou
+ rce: https://www.ticketmaster.com/stray-kids-world-tour-run-it-east-ruther
+ ford-new-jersey-06-29-2027/event/00006563A3F87257
+URL:https://www.ticketmaster.com/stray-kids-world-tour-run-it-east-rutherfo
+ rd-new-jersey-06-29-2027/event/00006563A3F87257
+DTSTART:20270629T233000Z
+DTEND:20270630T030000Z
 END:VEVENT
 BEGIN:VEVENT
 UID:metlife-all-k7vGF_4eVgQWY@github-calendar
