@@ -48,6 +48,32 @@ DTSTART:20261122T212500Z
 DTEND:20261123T002500Z
 END:VEVENT
 BEGIN:VEVENT
+UID:metlife-all-k7vGF_pMdJLcC@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:2026 NJSIAA MetLife Stadium High School Football
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / High Sc
+ hool.\n\nSource: https://www.ticketmaster.com/2026-njsiaa-metlife-stadium-
+ high-school-east-rutherford-new-jersey-11-28-2026/event/0000656DC399FB4E
+URL:https://www.ticketmaster.com/2026-njsiaa-metlife-stadium-high-school-ea
+ st-rutherford-new-jersey-11-28-2026/event/0000656DC399FB4E
+DTSTART:20261128T170000Z
+DTEND:20261128T200000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-all-k7vGF_pMdERcb@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:2026 NJSIAA MetLife Stadium High School Football
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / High Sc
+ hool.\n\nSource: https://www.ticketmaster.com/2026-njsiaa-metlife-stadium-
+ high-school-east-rutherford-new-jersey-11-29-2026/event/0000656DC39EFB58
+URL:https://www.ticketmaster.com/2026-njsiaa-metlife-stadium-high-school-ea
+ st-rutherford-new-jersey-11-29-2026/event/0000656DC39EFB58
+DTSTART:20261129T170000Z
+DTEND:20261129T200000Z
+END:VEVENT
+BEGIN:VEVENT
 UID:metlife-all-k7vGF_a6ezmvd@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:San Francisco 49ers @ New York Giants
