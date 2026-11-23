@@ -70,7 +70,8 @@ A separate **Test MetLife Stadium Calendar** workflow checks pull requests targe
 - Location: `MetLife Stadium`
 - Timed events use the published Ticketmaster start time.
 - Events with a known date but no confirmed start time are created as all-day events.
-- Sports events use a 3-hour duration.
+- Sports events normally use a 3-hour duration.
+- NJSIAA multi-game high-school football championship dates are recognized across calendar years. They use a **12-hour estimated window** from Ticketmaster's advertised start when the day's individual kickoff schedule is not available. Specific verified date-by-date times can override this estimate (as for November 28–29, 2026). Ordinary football games keep their 3-hour duration.
 - Concerts end at 11:00 PM local time when possible.
 - Other timed events default to a 4-hour duration.
 - Stable event IDs are used so updates modify existing calendar entries rather than creating duplicates.
