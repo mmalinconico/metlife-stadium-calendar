@@ -29,7 +29,11 @@ TIMEZONE_NAME = "America/New_York"
 LOCAL_TIMEZONE = ZoneInfo(TIMEZONE_NAME)
 
 SPORTS_EVENT_DURATION_HOURS = 3
-# Each Ticketmaster ticket covers a full day of state finals, not one game.
+# Ticketmaster often publishes one admission event for several NJSIAA finals.
+# When the individual kickoff schedule is unknown, reserve a 12-hour window
+# from the published start; exact verified annual overrides take precedence.
+NJSIAA_CHAMPIONSHIP_FALLBACK_HOURS = 12
+# Each 2026 Ticketmaster ticket covers a full day of state finals.
 # End times allow three hours after the last scheduled kickoff.
 NJSIAA_2026_CHAMPIONSHIP_WINDOWS = {
     ("k7vGF_pMdJLcC", "2026-11-28"): (10, 22),
@@ -810,13 +814,38 @@ def njsiaa_2026_championship_window(event):
     )
 
 
+def is_njsiaa_championship_day(event):
+    """Identify the NJSIAA multi-game football slate across future years.
+
+    Ticketmaster's event name may omit 'championship' and instead use
+    'NJSIAA MetLife Stadium High School Football'. Avoid matching
+    unrelated high-school games and other NJSIAA sports.
+    """
+    title = normalized_matchup_participant(event.get("name", ""))
+    words = set(title.split())
+    return (
+        "njsiaa" in words
+        and "football" in words
+        and (
+            "high school football" in title
+            or "championship" in words
+            or "championships" in words
+            or "state final" in title
+            or "state finals" in title
+        )
+    )
+
+
 def calculate_event_end(event, start_datetime):
     segment = event_segment(event)
 
     if segment == "sports":
-        return start_datetime + timedelta(
-            hours=SPORTS_EVENT_DURATION_HOURS
+        duration = (
+            NJSIAA_CHAMPIONSHIP_FALLBACK_HOURS
+            if is_njsiaa_championship_day(event)
+            else SPORTS_EVENT_DURATION_HOURS
         )
+        return start_datetime + timedelta(hours=duration)
 
     if segment == "music":
         local_start = start_datetime.astimezone(
