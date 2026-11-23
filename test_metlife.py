@@ -147,11 +147,58 @@ class NamingAndTimes(unittest.TestCase):
 
             # Other football events on the same date keep the normal duration.
             e["id"] = "another-football-event"
+            e["name"] = "New York Jets v. Buffalo Bills"
             lines = cal.build_event_lines(e)
             base = datetime(local_date.year, local_date.month, local_date.day,
                             12, tzinfo=NY).astimezone(timezone.utc)
             self.assertIn(f"DTSTART:{cal.format_utc_datetime(base)}", lines)
             self.assertIn(f"DTEND:{cal.format_utc_datetime(base + timedelta(hours=3))}", lines)
+
+    def test_future_njsiaa_multi_game_days(self):
+        # Neither the Ticketmaster ID nor the calendar year is hard-coded.
+        cases = (
+            ("2027 NJSIAA MetLife Stadium High School Football",
+             "njsiaa-2027-new-id", datetime(2027, 11, 27).date(), 10),
+            ("2028 NJSIAA Football State Championships",
+             "njsiaa-2028-new-id", datetime(2028, 12, 2).date(), 12),
+            ("2030 NJSIAA State Football Finals",
+             "njsiaa-2030-new-id", datetime(2030, 11, 30).date(), 9),
+        )
+        for name, ident, local_date, hour in cases:
+            e = event(name, ident=ident, local=local_date, hour=hour)
+            start = cal.parse_utc_datetime(e["start"]["dateTime"])
+            with self.subTest(name=name):
+                self.assertTrue(cal.is_njsiaa_championship_day(e))
+                self.assertEqual(cal.calculate_event_end(e, start) - start,
+                                 timedelta(hours=12))
+                for all_events in (False, True):
+                    lines = cal.build_event_lines(e, all_events=all_events)
+                    self.assertIn(
+                        f"DTSTART:{cal.format_utc_datetime(start)}", lines)
+                    self.assertIn(
+                        f"DTEND:{cal.format_utc_datetime(start + timedelta(hours=12))}",
+                        lines)
+
+                # An unconfirmed kickoff remains an all-day event.
+                e["start"]["timeTBA"] = True
+                lines = cal.build_event_lines(e)
+                self.assertTrue(any(line.startswith("DTSTART;VALUE=DATE:")
+                                    for line in lines))
+
+    def test_njsiaa_rule_does_not_change_other_sports(self):
+        examples = (
+            ("2027 NJSIAA High School Wrestling Championships", "Wrestling"),
+            ("2027 High School Football Championship", "Football"),
+            ("2027 NJSIAA Football Regular Season v. Opponent", "Football"),
+            ("New York Jets v. Buffalo Bills", "Football"),
+        )
+        for name, genre in examples:
+            e = event(name, segment="Sports", genre=genre)
+            start = cal.parse_utc_datetime(e["start"]["dateTime"])
+            with self.subTest(name=name):
+                self.assertFalse(cal.is_njsiaa_championship_day(e))
+                self.assertEqual(cal.calculate_event_end(e, start) - start,
+                                 timedelta(hours=3))
 
     def test_tba_all_day_location(self):
         e=event()
