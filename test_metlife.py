@@ -129,6 +129,30 @@ class NamingAndTimes(unittest.TestCase):
             ostart=cal.parse_utc_datetime(other["start"]["dateTime"])
             self.assertEqual(cal.calculate_event_end(other,ostart)-ostart,timedelta(hours=4))
 
+    def test_2026_njsiaa_multi_game_days(self):
+        cases = (
+            ("k7vGF_pMdJLcC", datetime(2026, 11, 28).date(),
+             "20261128T150000Z", "20261129T030000Z"),
+            ("k7vGF_pMdERcb", datetime(2026, 11, 29).date(),
+             "20261129T170000Z", "20261130T020000Z"),
+        )
+        for ident, local_date, start, end in cases:
+            e = event("2026 NJSIAA MetLife Stadium High School Football",
+                      ident=ident, local=local_date, hour=12)
+            for all_events in (False, True):
+                with self.subTest(ident=ident, all_events=all_events):
+                    lines = cal.build_event_lines(e, all_events=all_events)
+                    self.assertIn(f"DTSTART:{start}", lines)
+                    self.assertIn(f"DTEND:{end}", lines)
+
+            # Other football events on the same date keep the normal duration.
+            e["id"] = "another-football-event"
+            lines = cal.build_event_lines(e)
+            base = datetime(local_date.year, local_date.month, local_date.day,
+                            12, tzinfo=NY).astimezone(timezone.utc)
+            self.assertIn(f"DTSTART:{cal.format_utc_datetime(base)}", lines)
+            self.assertIn(f"DTEND:{cal.format_utc_datetime(base + timedelta(hours=3))}", lines)
+
     def test_tba_all_day_location(self):
         e=event()
         e["start"]["timeTBA"]=True

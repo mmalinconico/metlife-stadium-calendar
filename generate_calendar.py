@@ -29,6 +29,12 @@ TIMEZONE_NAME = "America/New_York"
 LOCAL_TIMEZONE = ZoneInfo(TIMEZONE_NAME)
 
 SPORTS_EVENT_DURATION_HOURS = 3
+# Each Ticketmaster ticket covers a full day of state finals, not one game.
+# End times allow three hours after the last scheduled kickoff.
+NJSIAA_2026_CHAMPIONSHIP_WINDOWS = {
+    ("k7vGF_pMdJLcC", "2026-11-28"): (10, 22),
+    ("k7vGF_pMdERcb", "2026-11-29"): (12, 21),
+}
 DEFAULT_EVENT_DURATION_HOURS = 4
 CONCERT_END_HOUR = 23
 RETENTION_DAYS = 7
@@ -781,6 +787,29 @@ def event_segment(event):
     return ""
 
 
+def njsiaa_2026_championship_window(event):
+    """Verified multi-game windows, limited to the two 2026 Ticketmaster IDs."""
+    local_date = event_local_date(event)
+    if local_date is None:
+        return None
+
+    hours = NJSIAA_2026_CHAMPIONSHIP_WINDOWS.get(
+        (event.get("id"), local_date.isoformat())
+    )
+    if hours is None:
+        return None
+
+    start_hour, end_hour = hours
+    local_midnight = datetime(
+        local_date.year, local_date.month, local_date.day,
+        tzinfo=LOCAL_TIMEZONE,
+    )
+    return (
+        local_midnight.replace(hour=start_hour).astimezone(timezone.utc),
+        local_midnight.replace(hour=end_hour).astimezone(timezone.utc),
+    )
+
+
 def calculate_event_end(event, start_datetime):
     segment = event_segment(event)
 
@@ -861,10 +890,14 @@ def build_event_lines(event, all_events=False):
         )
 
         if start_datetime:
-            end_datetime = calculate_event_end(
-                event,
-                start_datetime,
-            )
+            championship_window = njsiaa_2026_championship_window(event)
+            if championship_window is not None:
+                start_datetime, end_datetime = championship_window
+            else:
+                end_datetime = calculate_event_end(
+                    event,
+                    start_datetime,
+                )
 
             lines.append(
                 f"DTSTART:{format_utc_datetime(start_datetime)}"
