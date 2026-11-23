@@ -830,8 +830,8 @@ def is_njsiaa_championship_day(event):
             "high school football" in title
             or "championship" in words
             or "championships" in words
-            or "state final" in title
-            or "state finals" in title
+            or "final" in words
+            or "finals" in words
         )
     )
 
