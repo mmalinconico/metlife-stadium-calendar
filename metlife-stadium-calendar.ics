@@ -10,19 +10,6 @@ X-WR-CALDESC:Upcoming events at MetLife Stadium\, excluding New York Giants
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
 BEGIN:VEVENT
-UID:metlife-k7vGF_FN-EYBU@github-calendar
-DTSTAMP:20260905T120000Z
-SUMMARY:Buffalo Bills @ New York Jets
-LOCATION:MetLife Stadium
-DESCRIPTION:MetLife Stadium event.\n\nCategory: Sports / Football / NFL.\n\
- nSource: https://www.ticketmaster.com/new-york-jets-v-buffalo-bills-east-r
- utherford-new-jersey-11-15-2026/event/00006488E19F0EB6
-URL:https://www.ticketmaster.com/new-york-jets-v-buffalo-bills-east-rutherf
- ord-new-jersey-11-15-2026/event/00006488E19F0EB6
-DTSTART:20261115T180000Z
-DTEND:20261115T210000Z
-END:VEVENT
-BEGIN:VEVENT
 UID:metlife-k7vGF_pMdJLcC@github-calendar
 DTSTAMP:20260905T120000Z
 SUMMARY:2026 NJSIAA MetLife Stadium High School Football
