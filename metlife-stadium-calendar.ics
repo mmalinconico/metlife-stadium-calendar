@@ -191,4 +191,30 @@ URL:https://www.ticketmaster.com/kenny-chesney-the-original-vibe-room-east-
 DTSTART:20270807T203000Z
 DTEND:20270808T030000Z
 END:VEVENT
+BEGIN:VEVENT
+UID:metlife-k7vGF_9KczQx4@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:U2: The Greatest Show on Earth World Tour
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
+ ce: https://www.ticketmaster.com/u2-the-greatest-show-on-earth-east-ruther
+ ford-new-jersey-08-26-2027/event/00006574EDE1A895
+URL:https://www.ticketmaster.com/u2-the-greatest-show-on-earth-east-rutherf
+ ord-new-jersey-08-26-2027/event/00006574EDE1A895
+DTSTART:20270826T233000Z
+DTEND:20270827T030000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:metlife-k7vGF_9LrNhEN@github-calendar
+DTSTAMP:20260905T120000Z
+SUMMARY:U2: The Greatest Show on Earth World Tour
+LOCATION:MetLife Stadium
+DESCRIPTION:MetLife Stadium event.\n\nCategory: Music / Rock / Pop.\n\nSour
+ ce: https://www.ticketmaster.com/u2-the-greatest-show-on-earth-east-ruther
+ ford-new-jersey-08-28-2027/event/00006577DE8DB9E3
+URL:https://www.ticketmaster.com/u2-the-greatest-show-on-earth-east-rutherf
+ ord-new-jersey-08-28-2027/event/00006577DE8DB9E3
+DTSTART:20270828T233000Z
+DTEND:20270829T030000Z
+END:VEVENT
 END:VCALENDAR
